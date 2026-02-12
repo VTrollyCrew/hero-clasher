@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bv8e2r3faachf"]
+
+[ext_resource type="Texture2D" uid="uid://choujsnkj3k1l" path="res://Resources/Cards/CardDemonLord.png" id="1_kikvd"]
+[ext_resource type="Script" uid="uid://boql3qpomgm35" path="res://Card.gd" id="1_rjlel"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
+size = Vector2(158, 219)
+
+[node name="Card" type="Node2D" unique_id=1752829942]
+script = ExtResource("1_rjlel")
+
+[node name="CardImage" type="Sprite2D" parent="." unique_id=1778736533]
+scale = Vector2(0.21066666, 0.21066664)
+texture = ExtResource("1_kikvd")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=664739832]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=649798665]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_rjlel")
+
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]
