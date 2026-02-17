@@ -1,13 +1,23 @@
+# Card Manager must be modified to match the targetted deck format
+# Refer to written documentation
 extends Node2D
 
 const COLLISION_MASK_CARD = 1
 const COLLISION_MASK_CARD_SLOT = 2
 const DEFAULT_CARD_MOVE_SPEED = 0.1
+const DEFAULT_CARD_SCALE = 0.75
+const CARD_HIGHLIGHT_SCALE = 0.8
+const CARD_SMALLER_SCALE = 0.7
 
 var screen_size
 var card_being_dragged
 var is_hovering_on_card
 var player_hand_reference
+var player_played_character_card_this_turn = false
+# This is going to replace as player_played_item_cards_this_turn and limit the number of item usage
+# This is connected to the deck. Make sure to modify the deck for that
+# For the time being, this is set as monster, but there are only two types of cards
+# Characters, and items
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -24,19 +34,29 @@ func _process(delta: float) -> void:
 			
 func start_drag(card):
 	card_being_dragged = card
-	card.scale = Vector2(1.0, 1.0)
+	card.scale = Vector2(DEFAULT_CARD_SCALE, DEFAULT_CARD_SCALE)
 	
 func finish_drag():
-	card_being_dragged.scale = Vector2(1.05, 1.05)
+	card_being_dragged.scale = Vector2(DEFAULT_CARD_SCALE, DEFAULT_CARD_SCALE)
 	var card_slot_found = player_check_for_card_slot()
 	if card_slot_found and not card_slot_found.card_in_slot:
-		player_hand_reference.remove_card_from_hand(card_being_dragged)
-		# Card being dragged into a empty card slot
-		card_being_dragged.position = card_slot_found.position
-		card_being_dragged.get_node("Area2D/CollisionShape2D").disabled = true
-		card_slot_found.card_in_slot = true
-	else:
-		player_hand_reference.add_card_to_hand(card_being_dragged, DEFAULT_CARD_MOVE_SPEED)
+		# Check if the card is a character card (This will be enhanced later)
+		if card_being_dragged.card_type == card_slot_found.card_slot_type:
+			if !player_played_character_card_this_turn:
+				# Card dropped in slot
+				player_played_character_card_this_turn = true
+				card_being_dragged.scale = Vector2(CARD_SMALLER_SCALE, CARD_SMALLER_SCALE)
+				card_being_dragged.z_index = -1
+				is_hovering_on_card = false
+				card_being_dragged.card_is_in_card_slot = card_slot_found
+				player_hand_reference.remove_card_from_hand(card_being_dragged)
+				# Card being dragged into a empty card slot
+				card_being_dragged.position = card_slot_found.position
+				card_being_dragged.get_node("Area2D/CollisionShape2D").disabled = true
+				card_slot_found.card_in_slot = true
+				card_being_dragged = null
+				return
+	player_hand_reference.add_card_to_hand(card_being_dragged, DEFAULT_CARD_MOVE_SPEED)
 	card_being_dragged = null
 	
 			
@@ -57,7 +77,8 @@ func on_hovered_off_card(card):
 	#is_hovering_on_card = false
 	# There is an issue when placing just this line, it won't hover to the next card immediately
 	
-	if !card_being_dragged:
+	# Check card is not in the card slot and not being dragged
+	if !card.card_is_in_card_slot && !card_being_dragged:
 		highlight_card(card, false)
 		var new_card_hovered = player_check_for_cards()
 		if new_card_hovered:
@@ -67,10 +88,10 @@ func on_hovered_off_card(card):
 
 func highlight_card(card, hovered):
 	if hovered:
-		card.scale = Vector2(1.05, 1.05)
+		card.scale = Vector2(CARD_HIGHLIGHT_SCALE, CARD_HIGHLIGHT_SCALE)
 		card.z_index = 2
 	else:
-		card.scale = Vector2(1.0, 1.0)
+		card.scale = Vector2(DEFAULT_CARD_SCALE, DEFAULT_CARD_SCALE)
 		card.z_index = 1
 			
 func player_check_for_card_slot():
@@ -116,3 +137,5 @@ func get_card_with_highest_z_index(cards):
 			highest_z_index = current_card.z_index
 	return highest_z_card
 	
+func reset_played_character():
+	player_played_character_card_this_turn = false
