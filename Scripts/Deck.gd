@@ -45,11 +45,21 @@ func draw_card():
 	
 	var card_scene = preload(CARD_SCENE_PATH)
 	var new_card = card_scene.instantiate()
+	# instantiate() buils a new card object out of the pre loaded cards
+	
 	var card_image_path = str("res://Resources/Cards/" + card_drawn_name + "Card.png")
 	new_card.get_node("CardImage").texture = load(card_image_path)
-	new_card.get_node("Attack").text = str(card_database_reference.CARDS[card_drawn_name][0])
-	new_card.get_node("Health").text = str(card_database_reference.CARDS[card_drawn_name][1])
+	# This reads the image using the patterned name method and load the image asset
+	
+	new_card.health = card_database_reference.CARDS[card_drawn_name][0]
+	new_card.attack = card_database_reference.CARDS[card_drawn_name][1]
 	new_card.card_type = card_database_reference.CARDS[card_drawn_name][2]
+	# This loads the details of the card from the CardDatabase
+	
+	new_card.get_node("Attack").text = str(new_card.attack)
+	new_card.get_node("Health").text = str(new_card.health)
+	# This is for the richtext to display the data
+	
 	$"../CardManager".add_child(new_card)
 	# This must be build as this way as it is mentioned it Card.gd where it is mentioned that the Card is a child of CardManager
 	new_card.name = "Card"

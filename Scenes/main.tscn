@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://6525ihc45u0j"]
 
-[ext_resource type="Script" uid="uid://1ev5gf4x7ac3" path="res://Scripts/MonsterCardSlot.gd" id="1_vy5pj"]
+[ext_resource type="Script" uid="uid://1ev5gf4x7ac3" path="res://Scripts/CharacterCardSlot.gd" id="1_vy5pj"]
 [ext_resource type="Script" uid="uid://qaw8wgd5r4xf" path="res://Scripts/CardManager.gd" id="2_bmxlf"]
 [ext_resource type="PackedScene" uid="uid://dqhkc1ms11ysl" path="res://Scenes/CardSlot.tscn" id="3_4kpch"]
 [ext_resource type="Script" uid="uid://cteyy5ttsv3db" path="res://Scripts/MagicCardSlot.gd" id="4_grg3l"]
@@ -12,13 +12,14 @@
 [ext_resource type="Texture2D" uid="uid://bgfln7vkod0a1" path="res://Resources/Cards/Decks/Deck.png" id="9_2w5on"]
 [ext_resource type="Script" uid="uid://yjlwqvgy1h43" path="res://Scripts/BattleManager.gd" id="10_bmxlf"]
 [ext_resource type="Script" uid="uid://le268l4ukl5r" path="res://Scripts/OpponentDeck.gd" id="11_frkhe"]
+[ext_resource type="Texture2D" uid="uid://l5pon7jksw7t" path="res://Resources/CardSlot/CardSlot.png" id="13_frkhe"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_344ge"]
 size = Vector2(160, 230)
 
 [node name="Main" type="Node2D" unique_id=1492131311]
 script = ExtResource("1_vy5pj")
-metadata/_edit_vertical_guides_ = [960.0]
+metadata/_edit_vertical_guides_ = [960.0, 207.0]
 metadata/_edit_horizontal_guides_ = [540.0]
 
 [node name="CardManager" type="Node2D" parent="." unique_id=670872894]
@@ -160,10 +161,10 @@ text = "0"
 metadata/_edit_use_anchors_ = true
 
 [node name="EndTurnButton" type="Button" parent="." unique_id=1911000484]
-offset_left = 280.0
-offset_top = 627.0
-offset_right = 400.0
-offset_bottom = 663.0
+offset_left = 360.0
+offset_top = 724.0
+offset_right = 480.0
+offset_bottom = 760.0
 text = "End Turn"
 
 [node name="OpponentDeck" type="Node2D" parent="." unique_id=91639]
@@ -189,5 +190,37 @@ metadata/_edit_use_anchors_ = true
 script = ExtResource("10_bmxlf")
 
 [node name="BattleTimer" type="Timer" parent="." unique_id=826838294]
+
+[node name="PlayerHealth" type="RichTextLabel" parent="." unique_id=1522080454]
+offset_left = 208.0
+offset_top = 690.0
+offset_right = 285.0
+offset_bottom = 765.0
+scale = Vector2(2, 2)
+text = "0"
+
+[node name="OpponentHealth" type="RichTextLabel" parent="." unique_id=1151786161]
+offset_left = 208.0
+offset_top = 299.0
+offset_right = 285.0
+offset_bottom = 374.0
+scale = Vector2(2, 2)
+text = "0"
+
+[node name="PlayerDiscard" type="Node2D" parent="." unique_id=367635428]
+position = Vector2(1827, 788)
+scale = Vector2(0.7, 0.7)
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerDiscard" unique_id=332595173]
+scale = Vector2(0.96825445, 0.9047634)
+texture = ExtResource("13_frkhe")
+
+[node name="OpponentDiscard" type="Node2D" parent="." unique_id=680525336]
+position = Vector2(90, 284)
+scale = Vector2(0.7, 0.7)
+
+[node name="Sprite2D" type="Sprite2D" parent="OpponentDiscard" unique_id=575955902]
+scale = Vector2(0.96825445, 0.9047634)
+texture = ExtResource("13_frkhe")
 
 [connection signal="pressed" from="EndTurnButton" to="BattleManager" method="_on_end_turn_button_pressed"]

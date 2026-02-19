@@ -16,8 +16,10 @@ var player_hand_reference
 var player_played_character_card_this_turn = false
 # This is going to replace as player_played_item_cards_this_turn and limit the number of item usage
 # This is connected to the deck. Make sure to modify the deck for that
-# For the time being, this is set as monster, but there are only two types of cards
+# There are only two types of cards
 # Characters, and items
+
+var selected_character
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -31,6 +33,34 @@ func _process(delta: float) -> void:
 		var mouse_position = get_global_mouse_position()
 		card_being_dragged.position = Vector2(clamp(mouse_position.x, 0, screen_size.x), clamp(mouse_position.y, 0, screen_size.y))
 		# This makes the card follow the mouse in click and prevnt the card going out of bounds
+		
+func card_clicked(card):
+	if card.card_is_in_card_slot:			# This checks whether the card clicked is in a card slot, confirming it is in the play zone
+		if $"../BattleManager".is_opponent_turn == false:
+			if $"../BattleManager".player_declared_attack == false:
+				if card not in $"../BattleManager".player_characters_attacked_this_turn:
+					if $"../BattleManager".opponent_character_cards_on_field.size() == 0:
+						$"../BattleManager".direct_attack(card, "Player")
+						return
+					else:
+						select_card_to_declare_attack(card)
+	else:
+		start_drag(card)
+		
+func select_card_to_declare_attack(card):
+	# Toggle selected card
+	if selected_character:
+		# If the card is already selected
+		if selected_character == card:
+			card.position.y += 20
+			selected_character = null
+		else:
+			selected_character.position.y += 20
+			selected_character = card
+			card.position.y -= 20
+	else:
+		selected_character = card
+		card.position.y -= 20
 			
 func start_drag(card):
 	card_being_dragged = card
@@ -52,14 +82,19 @@ func finish_drag():
 				player_hand_reference.remove_card_from_hand(card_being_dragged)
 				# Card being dragged into a empty card slot
 				card_being_dragged.position = card_slot_found.position
-				card_being_dragged.get_node("Area2D/CollisionShape2D").disabled = true
 				card_slot_found.card_in_slot = true
+				card_slot_found.get_node("Area2D/CollisionShape2D").disabled = true
+				$"../BattleManager".player_character_cards_on_field.append(card_being_dragged)
 				card_being_dragged = null
 				return
 	player_hand_reference.add_card_to_hand(card_being_dragged, DEFAULT_CARD_MOVE_SPEED)
 	card_being_dragged = null
 	
-			
+func deselect_selected_character():
+	if selected_character:
+		selected_character.position.y += 20
+		selected_character = null
+
 func connect_card_signals(card):
 	card.connect("hovered", on_hovered_over_card)
 	card.connect("hovered_off", on_hovered_off_card)
@@ -69,6 +104,11 @@ func on_left_click_released():
 		finish_drag()
 	
 func on_hovered_over_card(card):
+	# This checks whether thecard is already in a card slot
+	if card.card_is_in_card_slot:
+		return
+	
+	#This checks whether the mouse is hovering over the card
 	if !is_hovering_on_card:
 		is_hovering_on_card = true
 		highlight_card(card, true)
@@ -77,14 +117,16 @@ func on_hovered_off_card(card):
 	#is_hovering_on_card = false
 	# There is an issue when placing just this line, it won't hover to the next card immediately
 	
-	# Check card is not in the card slot and not being dragged
-	if !card.card_is_in_card_slot && !card_being_dragged:
-		highlight_card(card, false)
-		var new_card_hovered = player_check_for_cards()
-		if new_card_hovered:
-			highlight_card(new_card_hovered, true)
-		else:
-			is_hovering_on_card = false
+	# To check if that card is recognized as defeated
+	if !card.defeated:
+		# Check card is not in the card slot and not being dragged
+		if !card.card_is_in_card_slot && !card_being_dragged:
+			highlight_card(card, false)
+			var new_card_hovered = player_check_for_cards()
+			if new_card_hovered:
+				highlight_card(new_card_hovered, true)
+			else:
+				is_hovering_on_card = false
 
 func highlight_card(card, hovered):
 	if hovered:

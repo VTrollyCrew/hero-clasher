@@ -160,6 +160,9 @@ _data = {
 &"card_flip": SubResource("Animation_wf8id")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qrb68"]
+size = Vector2(157.33334, 221.33334)
+
 [node name="Card" type="Node2D" unique_id=1752829942]
 position = Vector2(90, 105)
 scale = Vector2(0.75, 0.75)
@@ -197,3 +200,10 @@ horizontal_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1743730122]
 libraries/ = SubResource("AnimationLibrary_brehn")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=938583781]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=147744637]
+shape = SubResource("RectangleShape2D_qrb68")

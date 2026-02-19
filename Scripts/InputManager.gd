@@ -1,11 +1,15 @@
 extends Node2D
 
+# For recording clicks
 signal left_mouse_button_clicked
 signal left_mouse_button_released
 
+# For collision masks for inputs
 const COLLISION_MASK_CARD = 1
 const COLLISION_MASK_DECK = 4
+const COLLISION_MASK_OPPONENT_CARD = 8
 
+# For card manager reference and deck reference
 var card_manager_reference
 var deck_reference
 
@@ -39,7 +43,9 @@ func player_at_cursor():
 			# This checks the card click
 			var card_found = result[0].collider.get_parent()
 			if card_found:
-				card_manager_reference.start_drag(card_found)
+				card_manager_reference.card_clicked(card_found)
 		elif result_collision_mask == COLLISION_MASK_DECK:
 			# This checks the deck click
 			deck_reference.draw_card()
+		elif result_collision_mask == COLLISION_MASK_OPPONENT_CARD:
+			$"../BattleManager".opponent_card_selected(result[0].collider.get_parent())

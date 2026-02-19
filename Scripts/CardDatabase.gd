@@ -2,12 +2,12 @@
 # "Card Name": {attack, health, card type}
 
 const CARDS = {
-	"Knight": [2, 3, "Character"],
+	"Knight": [2, 2, "Character"],
 	"Demon": [3, 2, "Character"],
-	"Archer": [1, 3, "Character"],
-	"BlueSlime": [1, 4, "Character"],
-	"RedSlime": [1, 4, "Character"],
-	"GreenSlime": [1, 4, "Character"],
+	"Archer": [3, 1, "Character"],
+	"BlueSlime": [4, 1, "Character"],
+	"RedSlime": [4, 1, "Character"],
+	"GreenSlime": [3, 1, "Character"],
 }
 # This is where the card information are saved.
 # Note that this will be modified later

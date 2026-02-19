@@ -3,9 +3,17 @@ extends Node2D
 signal hovered
 signal hovered_off
 
+# For card position handling
 var starting_position
 var card_is_in_card_slot
+
+# For card details handling
 var card_type
+var health
+var attack
+
+# For card state
+var defeated = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
