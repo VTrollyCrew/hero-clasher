@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://1ev5gf4x7ac3" path="res://Scripts/CharacterCardSlot.gd" id="1_vy5pj"]
 [ext_resource type="Script" uid="uid://qaw8wgd5r4xf" path="res://Scripts/CardManager.gd" id="2_bmxlf"]
 [ext_resource type="PackedScene" uid="uid://dqhkc1ms11ysl" path="res://Scenes/CardSlot.tscn" id="3_4kpch"]
-[ext_resource type="Script" uid="uid://cteyy5ttsv3db" path="res://Scripts/MagicCardSlot.gd" id="4_grg3l"]
+[ext_resource type="Script" uid="uid://cteyy5ttsv3db" path="res://Scripts/ItemCardSlot.gd" id="4_grg3l"]
 [ext_resource type="PackedScene" uid="uid://h6o2dvenyoby" path="res://Scenes/OpponentCardSlot.tscn" id="5_frkhe"]
 [ext_resource type="Script" uid="uid://dkluf6h8wghjr" path="res://Scripts/PlayerHand.gd" id="6_1p5hy"]
 [ext_resource type="Script" uid="uid://dvfmjs24xkop8" path="res://Scripts/OpponentHand.gd" id="7_grg3l"]

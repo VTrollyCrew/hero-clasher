@@ -36,14 +36,22 @@ func _process(delta: float) -> void:
 		
 func card_clicked(card):
 	if card.card_is_in_card_slot:			# This checks whether the card clicked is in a card slot, confirming it is in the play zone
-		if $"../BattleManager".is_opponent_turn == false:
-			if $"../BattleManager".player_declared_attack == false:
-				if card not in $"../BattleManager".player_characters_attacked_this_turn:
-					if $"../BattleManager".opponent_character_cards_on_field.size() == 0:
-						$"../BattleManager".direct_attack(card, "Player")
-						return
-					else:
-						select_card_to_declare_attack(card)
+		if $"../BattleManager".is_opponent_turn:	# This checks whether it is the opponents' turn
+			return
+			
+		if $"../BattleManager".player_declared_attack: # This checks whether the player already has declared attack
+			return
+			
+		if card in $"../BattleManager".player_characters_attacked_this_turn: # This
+			return
+			
+		if card.card_type != "Character":
+			return
+		
+		if $"../BattleManager".opponent_character_cards_on_field.size() == 0:
+			$"../BattleManager".direct_attack(card, "Player")
+		else:
+			select_card_to_declare_attack(card)
 	else:
 		start_drag(card)
 		
@@ -72,21 +80,34 @@ func finish_drag():
 	if card_slot_found and not card_slot_found.card_in_slot:
 		# Check if the card is a character card (This will be enhanced later)
 		if card_being_dragged.card_type == card_slot_found.card_slot_type:
-			if !player_played_character_card_this_turn:
-				# Card dropped in slot
-				player_played_character_card_this_turn = true
-				card_being_dragged.scale = Vector2(CARD_SMALLER_SCALE, CARD_SMALLER_SCALE)
-				card_being_dragged.z_index = -1
-				is_hovering_on_card = false
-				card_being_dragged.card_is_in_card_slot = card_slot_found
-				player_hand_reference.remove_card_from_hand(card_being_dragged)
-				# Card being dragged into a empty card slot
-				card_being_dragged.position = card_slot_found.position
-				card_slot_found.card_in_slot = true
-				card_slot_found.get_node("Area2D/CollisionShape2D").disabled = true
-				$"../BattleManager".player_character_cards_on_field.append(card_being_dragged)
+			
+			# Check whether the card is in the correct slot and player played character card this turn
+			if card_being_dragged.card_type == "Character" && player_played_character_card_this_turn:
+				player_hand_reference.add_card_to_hand(card_being_dragged, DEFAULT_CARD_MOVE_SPEED)
 				card_being_dragged = null
 				return
+				
+			# Card dropped in slot
+			card_being_dragged.scale = Vector2(CARD_SMALLER_SCALE, CARD_SMALLER_SCALE)
+			card_being_dragged.z_index = -1
+			is_hovering_on_card = false
+			card_being_dragged.card_is_in_card_slot = card_slot_found
+			player_hand_reference.remove_card_from_hand(card_being_dragged)
+			# Card being dragged into a empty card slot
+			card_being_dragged.position = card_slot_found.position
+			card_slot_found.card_in_slot = true
+			card_slot_found.get_node("Area2D/CollisionShape2D").disabled = true
+			
+			if card_being_dragged.card_type == "Character":
+				$"../BattleManager".player_character_cards_on_field.append(card_being_dragged)
+				player_played_character_card_this_turn = true
+			else:
+				#print("Item card played")		# For debugging purposes
+				card_being_dragged.ability_script.trigger_ability($"../BattleManager", card_being_dragged, $"../InputManager")
+				
+			card_being_dragged = null
+			return
+			
 	player_hand_reference.add_card_to_hand(card_being_dragged, DEFAULT_CARD_MOVE_SPEED)
 	card_being_dragged = null
 	
@@ -129,6 +150,9 @@ func on_hovered_off_card(card):
 				is_hovering_on_card = false
 
 func highlight_card(card, hovered):
+	if card.card_is_in_card_slot:
+		return
+	
 	if hovered:
 		card.scale = Vector2(CARD_HIGHLIGHT_SCALE, CARD_HIGHLIGHT_SCALE)
 		card.z_index = 2

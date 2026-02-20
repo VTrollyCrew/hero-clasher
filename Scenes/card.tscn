@@ -204,6 +204,12 @@ scale = Vector2(1.5, 1.5)
 text = "000"
 horizontal_alignment = 1
 
+[node name="Ability" type="RichTextLabel" parent="." unique_id=1641957711]
+offset_left = -72.0
+offset_top = 40.0
+offset_right = 70.66667
+offset_bottom = 102.66667
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1743730122]
 libraries/ = SubResource("AnimationLibrary_brehn")
 

@@ -178,6 +178,12 @@ z_index = -1
 scale = Vector2(0.21066666, 0.21066664)
 texture = ExtResource("3_0rmfg")
 
+[node name="Ability" type="RichTextLabel" parent="." unique_id=1081422047]
+offset_left = -72.0
+offset_top = 40.0
+offset_right = 70.66667
+offset_bottom = 102.66667
+
 [node name="Attack" type="RichTextLabel" parent="." unique_id=1867576426]
 modulate = Color(1, 1, 1, 0)
 offset_left = -77.0

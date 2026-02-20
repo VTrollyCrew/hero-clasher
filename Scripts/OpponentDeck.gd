@@ -4,7 +4,7 @@ const CARD_SCENE_PATH = "res://Scenes/OpponentCard.tscn"
 # This is the card scene path
 const CARD_DRAW_SPEED = 0.2
 # This is the speed of the card draw
-const STARTING_HAND_SIZE = 3
+const STARTING_HAND_SIZE = 7
 
 var opponent_deck = ["Knight", "Archer", "BlueSlime", "Demon", "Demon", "RedSlime", "RedSlime", "Knight", "Archer", "GreenSlime"]
 # This is where the deck is saved. 
@@ -44,14 +44,30 @@ func draw_card():
 	new_card.get_node("CardImage").texture = load(card_image_path)
 	# This reads the image using the patterned name method and load the image asset
 	
-	new_card.health = card_database_reference.CARDS[card_drawn_name][0]
-	new_card.attack = card_database_reference.CARDS[card_drawn_name][1]
 	new_card.card_type = card_database_reference.CARDS[card_drawn_name][2]
-	# This loads the details of the card from the CardDatabase
 	
-	new_card.get_node("Attack").text = str(new_card.attack)
-	new_card.get_node("Health").text = str(new_card.health)
-	# This is for the richtext to display the data
+	if new_card.card_type == "Character":
+	# This checks whether the new card is a character
+		# For now, this sets the visibility of the ability text to false
+		# This will be modified later
+		new_card.get_node("Ability").visible = false
+		
+		new_card.health = card_database_reference.CARDS[card_drawn_name][0]
+		new_card.attack = card_database_reference.CARDS[card_drawn_name][1]
+		# This loads the details of the card from the CardDatabase
+		
+		new_card.get_node("Attack").text = str(new_card.attack)
+		new_card.get_node("Health").text = str(new_card.health)
+		# This is for the richtext to display the data
+	elif new_card.card_type == "Item":
+	# This checks whether the new card is an item
+		new_card.get_node("Ability").visible = true
+		new_card.get_node("Attack").visible = false
+		new_card.get_node("Health").visible = false
+		new_card.get_node("Ability").text = card_database_reference.CARDS[card_drawn_name][3]
+	else:
+		pass
+	
 	$"../CardManager".add_child(new_card)
 	# This must be build as this way as it is mentioned it Card.gd where it is mentioned that the Card is a child of CardManager
 	new_card.name = "Card"

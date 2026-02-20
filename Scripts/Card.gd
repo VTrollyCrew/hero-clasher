@@ -15,6 +15,9 @@ var attack
 # For card state
 var defeated = false
 
+# For abilities
+var ability_script
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# This makes sure that all carda a child of the CardManager. If not, this will emit an fatal error

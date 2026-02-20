@@ -13,6 +13,9 @@ const COLLISION_MASK_OPPONENT_CARD = 8
 var card_manager_reference
 var deck_reference
 
+# To control inputs from user
+var inputs_disabled = false
+
 # This is a constant active function
 func _ready() -> void:
 	card_manager_reference = $"../CardManager"
@@ -29,6 +32,9 @@ func _input(event):
 			emit_signal("left_mouse_button_released")
 
 func player_at_cursor():
+	if inputs_disabled:
+		return
+	
 	var space_state = get_world_2d().direct_space_state
 	var parameters = PhysicsPointQueryParameters2D.new()
 	# The above section is to return whatever is under the cursor

@@ -257,3 +257,11 @@ func opponent_card_selected(defending_card):
 			if player_declared_attack == false:
 				$"../CardManager".selected_character = null
 				attack(attacking_card, defending_card, "Player")
+
+func enabling_end_turn_button(is_enabled):
+	if is_enabled:
+		$"../EndTurnButton".disabled = false
+		$"../EndTurnButton".visible = true
+	else:
+		$"../EndTurnButton".disabled = true
+		$"../EndTurnButton".visible = false
