@@ -21,9 +21,6 @@ var opponent_health
 # For opponents' turn check
 var is_opponent_turn = false
 
-# For checking player attacked state
-var player_declared_attack = false
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	battle_timer = $"../BattleTimer"
@@ -42,6 +39,10 @@ func _ready() -> void:
 	empty_character_card_slots.append($"../CardSlots/OpponentCardSlot3")
 	empty_character_card_slots.append($"../CardSlots/OpponentCardSlot4")
 	empty_character_card_slots.append($"../CardSlots/OpponentCardSlot5")
+	
+func direct_damage_to_opponent(damage):
+	opponent_health = max(0, opponent_health - damage)
+	$"../OpponentHealth".text = str(opponent_health)
 
 func opponent_turn():
 	$"../EndTurnButton".disabled = true
@@ -78,9 +79,8 @@ func direct_attack(attacking_card, attacker):
 	if attacker == "Opponent":
 		new_position_y = 1080
 	else:
-		$"../EndTurnButton".disabled = true
-		$"../EndTurnButton".visible = false
-		player_declared_attack = true
+		enabling_end_turn_button(false)
+		$"../InputManager".inputs_disabled = true
 		new_position_y = 0
 		player_characters_attacked_this_turn.append(attacking_card)
 	
@@ -111,9 +111,10 @@ func direct_attack(attacking_card, attacker):
 	await wait(1.0)
 	
 	if attacker == "Player":
-		player_declared_attack = false
-		$"../EndTurnButton".disabled = false
-		$"../EndTurnButton".visible = true
+		if attacking_card.ability_script:
+			await attacking_card.ability_script.trigger_ability(self, attacking_card, $"../InputManager", "after_attack")
+		enabling_end_turn_button(true)
+		$"../InputManager".inputs_disabled = false
 	
 # The attack function will be modified later to use the attacking card abilities/basic attacks
 # Basic attack is not defined properly in the structure yet, but will discuss
@@ -121,9 +122,8 @@ func attack(attacking_card, defending_card, attacker):
 	# print("Attack") 
 	# For testing purposes
 	if attacker == "Player":
-		player_declared_attack = true
-		$"../EndTurnButton".disabled = true
-		$"../EndTurnButton".visible = false
+		enabling_end_turn_button(false)
+		$"../InputManager".inputs_disabled = true
 		$"../CardManager".selected_character = null
 		player_characters_attacked_this_turn.append(attacking_card)
 	
@@ -166,9 +166,10 @@ func attack(attacking_card, defending_card, attacker):
 		await wait(1.0)
 		
 	if attacker == "Player":
-		player_declared_attack = false
-		$"../EndTurnButton".disabled = false
-		$"../EndTurnButton".visible = true
+		if attacking_card.ability_script:
+			await attacking_card.ability_script.trigger_ability(self, attacking_card, $"../InputManager", "after_attack")
+		enabling_end_turn_button(true)
+		$"../InputManager".inputs_disabled = false
 	
 func try_play_card_with_highest_attack():
 	# For now, let opponent play a card with the highest attack
@@ -216,6 +217,11 @@ func end_opponent_turn():
 func _on_end_turn_button_pressed() -> void:
 	is_opponent_turn = true
 	$"../CardManager".deselect_selected_character()
+	
+	# To check all attacked cards end turn abilities 
+	for card in player_characters_attacked_this_turn:
+		card.ability_script.end_turn_ability_reset()
+	
 	player_characters_attacked_this_turn = []
 	opponent_turn()
 	
@@ -254,7 +260,7 @@ func opponent_card_selected(defending_card):
 	var attacking_card = $"../CardManager".selected_character
 	if attacking_card:
 		if defending_card in opponent_character_cards_on_field:
-			if player_declared_attack == false:
+			if $"../InputManager".inputs_disabled == false:
 				$"../CardManager".selected_character = null
 				attack(attacking_card, defending_card, "Player")
 

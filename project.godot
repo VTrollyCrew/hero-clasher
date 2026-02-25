@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="game-build"
-run/main_scene="uid://6525ihc45u0j"
+run/main_scene="uid://d2xowmdepe0w0"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+UIAnimation="*uid://cawfyydj325or"
 
 [display]
 
@@ -26,9 +30,20 @@ window/size/mode=3
 version_control/plugin_name="GitPlugin"
 version_control/autoload_on_startup=true
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/GUIPresser/plugin.cfg", "res://addons/godot_ui_animations/plugin.cfg", "res://addons/godot_vscode_ide/plugin.cfg")
+
 [physics]
 
 3d/physics_engine="Jolt Physics"
+
+[plugins]
+
+ai_assistant_hub/llm_api="ollama_api"
+ai_assistant_hub/preferences/thinking_target=0
+ai_assistant_hub/preferences/skip_greeting=false
+ai_assistant_hub/preferences/always_scroll_to_bottom=false
 
 [rendering]
 

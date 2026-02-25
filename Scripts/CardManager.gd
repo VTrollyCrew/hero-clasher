@@ -39,9 +39,6 @@ func card_clicked(card):
 		if $"../BattleManager".is_opponent_turn:	# This checks whether it is the opponents' turn
 			return
 			
-		if $"../BattleManager".player_declared_attack: # This checks whether the player already has declared attack
-			return
-			
 		if card in $"../BattleManager".player_characters_attacked_this_turn: # This
 			return
 			
@@ -72,7 +69,12 @@ func select_card_to_declare_attack(card):
 			
 func start_drag(card):
 	card_being_dragged = card
+	
 	card.scale = Vector2(DEFAULT_CARD_SCALE, DEFAULT_CARD_SCALE)
+	card.z_index = 100  # Always on top while dragging
+	
+	# Reset arc rotation
+	card.rotation_degrees = 0
 	
 func finish_drag():
 	card_being_dragged.scale = Vector2(DEFAULT_CARD_SCALE, DEFAULT_CARD_SCALE)
@@ -101,9 +103,9 @@ func finish_drag():
 			if card_being_dragged.card_type == "Character":
 				$"../BattleManager".player_character_cards_on_field.append(card_being_dragged)
 				player_played_character_card_this_turn = true
-			else:
-				#print("Item card played")		# For debugging purposes
-				card_being_dragged.ability_script.trigger_ability($"../BattleManager", card_being_dragged, $"../InputManager")
+			
+			if card_being_dragged.ability_script:
+				card_being_dragged.ability_script.trigger_ability($"../BattleManager", card_being_dragged, $"../InputManager", "card_played")
 				
 			card_being_dragged = null
 			return

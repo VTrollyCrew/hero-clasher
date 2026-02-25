@@ -56,8 +56,6 @@ func draw_card():
 	if new_card.card_type == "Character":
 	# This checks whether the new card is a character
 		# For now, this sets the visibility of the ability text to false
-		# This will be modified later
-		new_card.get_node("Ability").visible = false
 		
 		new_card.health = card_database_reference.CARDS[card_drawn_name][0]
 		new_card.attack = card_database_reference.CARDS[card_drawn_name][1]
@@ -71,13 +69,16 @@ func draw_card():
 		new_card.get_node("Ability").visible = true
 		new_card.get_node("Attack").visible = false
 		new_card.get_node("Health").visible = false
-		# Card abilityt related
-		new_card.get_node("Ability").text = card_database_reference.CARDS[card_drawn_name][3]
-		var new_card_ability_script_path = card_database_reference.CARDS[card_drawn_name][4]
-		if new_card_ability_script_path:
-			new_card.ability_script = load(new_card_ability_script_path).new()			# Instantiate
 	else:
 		pass
+	
+	# Card ability related
+	var new_card_ability_script_path = card_database_reference.CARDS[card_drawn_name][4]
+	if new_card_ability_script_path:
+		new_card.ability_script = load(new_card_ability_script_path).new()			# Instantiate
+		new_card.get_node("Ability").text = card_database_reference.CARDS[card_drawn_name][3]
+	else:
+		new_card.get_node("Ability").visible = false
 	
 	$"../CardManager".add_child(new_card)
 	# This must be build as this way as it is mentioned it Card.gd where it is mentioned that the Card is a child of CardManager
