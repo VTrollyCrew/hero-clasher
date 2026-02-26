@@ -14,7 +14,7 @@ var card_manager_reference
 var deck_reference
 
 # To control inputs from user
-var inputs_disabled = false
+var inputs_disabled = true
 
 # This is a constant active function
 func _ready() -> void:
@@ -52,6 +52,6 @@ func player_at_cursor():
 				card_manager_reference.card_clicked(card_found)
 		elif result_collision_mask == COLLISION_MASK_DECK:
 			# This checks the deck click
-			deck_reference.draw_card()
+			deck_reference.deck_clicked()
 		elif result_collision_mask == COLLISION_MASK_OPPONENT_CARD:
 			$"../BattleManager".opponent_card_selected(result[0].collider.get_parent())

@@ -27,22 +27,24 @@ func _ready() -> void:
 	battle_timer.one_shot = true
 	battle_timer.wait_time = 1.0
 	
-	player_health = STARTING_HEALTH
-	$"../PlayerHealth".text = str(player_health)
-	opponent_health = STARTING_HEALTH
-	$"../OpponentHealth".text = str(opponent_health)
+	# The below units will be handled elsewhere
+	#player_health = STARTING_HEALTH
+	#$"../PlayerHealth".text = str(player_health)
+	#opponent_health = STARTING_HEALTH
+	#$"../OpponentHealth".text = str(opponent_health)
 	
 	# To store the character card slots
 	# This will be changed later
-	empty_character_card_slots.append($"../CardSlots/OpponentCardSlot1")
-	empty_character_card_slots.append($"../CardSlots/OpponentCardSlot2")
-	empty_character_card_slots.append($"../CardSlots/OpponentCardSlot3")
-	empty_character_card_slots.append($"../CardSlots/OpponentCardSlot4")
-	empty_character_card_slots.append($"../CardSlots/OpponentCardSlot5")
+	# These will be removed in the multiplayer
+	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot1")
+	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot2")
+	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot3")
+	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot4")
+	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot5")
 	
 func direct_damage_to_opponent(damage):
 	opponent_health = max(0, opponent_health - damage)
-	$"../OpponentHealth".text = str(opponent_health)
+	#$"../OpponentHealth".text = str(opponent_health)
 
 func opponent_turn():
 	$"../EndTurnButton".disabled = true
@@ -99,7 +101,7 @@ func direct_attack(attacking_card, attacker):
 		# Deal damage to player
 	else:
 		opponent_health = max(0, opponent_health - attacking_card.attack)
-		$"../OpponentHealth".text = str(opponent_health)
+		#$"../OpponentHealth".text = str(opponent_health)
 		# Deal damage to opponent
 	
 	# Animete cards to position

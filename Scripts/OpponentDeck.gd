@@ -6,19 +6,23 @@ const CARD_DRAW_SPEED = 0.2
 # This is the speed of the card draw
 const STARTING_HAND_SIZE = 7
 
-var opponent_deck = ["Knight", "Archer", "BlueSlime", "Demon", "Demon", "RedSlime", "RedSlime", "Knight", "Archer", "GreenSlime"]
+var opponent_deck = ["Knight", "BottledTornado", "BlueSlime", "Demon", "BottledTornado", "RedSlime", "RedSlime", "Knight", "Archer", "GreenSlime", "BottledTornado"]
 # This is where the deck is saved. 
 # For now, give temporary values
 var card_database_reference
 
+var deck_size
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	opponent_deck.shuffle()
-	$RichTextLabel.text = str(opponent_deck.size())
+	#$RichTextLabel.text = str(opponent_deck.size())	# Will be initiated elsewhere
 	# This returns how many cards are left in the deck
 	card_database_reference = preload("res://Scripts/CardDatabase.gd")
-	for i in range(STARTING_HAND_SIZE):
-		draw_card()
+	
+	# This will be handled soon
+	#for i in range(STARTING_HAND_SIZE):
+		#draw_card()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
