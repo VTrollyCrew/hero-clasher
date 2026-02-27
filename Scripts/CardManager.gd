@@ -36,17 +36,14 @@ func _process(delta: float) -> void:
 		
 func card_clicked(card):
 	if card.card_is_in_card_slot:			# This checks whether the card clicked is in a card slot, confirming it is in the play zone
-		if $"../BattleManager".is_opponent_turn:	# This checks whether it is the opponents' turn
-			return
-			
-		if card in $"../BattleManager".player_characters_attacked_this_turn: # This
+		if card in $"../BattleManager".player_characters_attacked_this_turn: # This checks whether the player attacked this turn
 			return
 			
 		if card.card_type != "Character":
 			return
 		
 		if $"../BattleManager".opponent_character_cards_on_field.size() == 0:
-			$"../BattleManager".direct_attack(card, "Player")
+			$"../BattleManager".direct_attack(card)
 		else:
 			select_card_to_declare_attack(card)
 	else:
@@ -89,16 +86,13 @@ func finish_drag():
 				card_being_dragged = null
 				return
 				
-			# Card dropped in slot
-			card_being_dragged.scale = Vector2(CARD_SMALLER_SCALE, CARD_SMALLER_SCALE)
-			card_being_dragged.z_index = -1
-			is_hovering_on_card = false
-			card_being_dragged.card_is_in_card_slot = card_slot_found
-			player_hand_reference.remove_card_from_hand(card_being_dragged)
-			# Card being dragged into a empty card slot
-			card_being_dragged.position = card_slot_found.position
-			card_slot_found.card_in_slot = true
-			card_slot_found.get_node("Area2D/CollisionShape2D").disabled = true
+			# To collect the player ID to handle the set
+			# By default, the host ID is 1. Any clients created are given a random set of numbers
+			var player_id = multiplayer.get_unique_id()
+				
+			# To play card for player and client
+			play_cards_in_slot_for_client_and_opponent(player_id, str(card_being_dragged.name), str(card_slot_found))
+			rpc("play_cards_in_slot_for_client_and_opponent", player_id, str(card_being_dragged.name), str(card_slot_found))
 			
 			if card_being_dragged.card_type == "Character":
 				$"../BattleManager".player_character_cards_on_field.append(card_being_dragged)
@@ -112,6 +106,50 @@ func finish_drag():
 			
 	player_hand_reference.add_card_to_hand(card_being_dragged, DEFAULT_CARD_MOVE_SPEED)
 	card_being_dragged = null
+	
+# This will be functioned to play cards for both player and opponnent
+@rpc("any_peer")
+func play_cards_in_slot_for_client_and_opponent(player_ID, card_name, card_slot_name):
+	var card
+	var card_slot
+	
+	if multiplayer.get_unique_id() == player_ID:
+		# These are called only locally
+		card = get_node(card_name)
+		card_slot = $"../CardSlots".get_node(card_slot_name)
+		
+		is_hovering_on_card = false	
+		player_hand_reference.remove_card_from_hand(card_being_dragged)
+		card.position = card_slot.position
+		card_slot.get_node("Area2D/CollisionShape2D").disabled = true
+		
+		if card.card_type == "Item":
+			await get_tree().create_timer(1.5).timeout 			# Give time for the animation/ability
+			$"../BattleManager".destroy_card(card, "Player")
+	else:
+		# This is the opponent side reflect
+		var opponent_field_reference = get_parent().get_parent().get_node("OpponentField/")
+		card = opponent_field_reference.get_node("CardManager/" + card_name)
+		
+		card_slot = opponent_field_reference.get_node("CardSlots/" + card_slot_name)
+		opponent_field_reference.get_node("OpponentHand").remove_card_from_hand(card)
+		
+		var tween = get_tree().create_tween()
+		tween.tween_property(card, "position", card_slot.position, DEFAULT_CARD_MOVE_SPEED)
+		
+		# Flip effect
+		card.get_node("AnimationPlayer").play("card_flip")
+		
+		$"../BattleManager".opponent_character_cards_on_field.append(card)
+		
+		if card.card_type == "Item":
+			await get_tree().create_timer(1.5).timeout
+			$"../BattleManager".destroy_card(card, "Opponent")
+		
+	card.scale = Vector2(CARD_SMALLER_SCALE, CARD_SMALLER_SCALE)
+	card.z_index = -1
+	card.card_is_in_card_slot = card_slot
+	card_slot.card_in_slot = true
 	
 func deselect_selected_character():
 	if selected_character:

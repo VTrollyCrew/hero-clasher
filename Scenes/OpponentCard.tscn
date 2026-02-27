@@ -178,31 +178,30 @@ z_index = -1
 scale = Vector2(0.21066666, 0.21066664)
 texture = ExtResource("3_0rmfg")
 
+[node name="Attack" type="RichTextLabel" parent="." unique_id=1867576426]
+modulate = Color(1, 1, 1, 0)
+offset_left = -71.66667
+offset_top = -103.99998
+offset_right = -31.666672
+offset_bottom = -63.999977
+scale = Vector2(1.5, 1.5)
+text = "000"
+
+[node name="Health" type="RichTextLabel" parent="." unique_id=1625907080]
+modulate = Color(1, 1, 1, 0)
+offset_left = 10.667007
+offset_top = -104.0
+offset_right = 50.667007
+offset_bottom = -64.0
+scale = Vector2(1.5, 1.5)
+text = "000"
+horizontal_alignment = 2
+
 [node name="Ability" type="RichTextLabel" parent="." unique_id=1081422047]
 offset_left = -72.0
 offset_top = 40.0
 offset_right = 70.66667
 offset_bottom = 102.66667
-
-[node name="Attack" type="RichTextLabel" parent="." unique_id=1867576426]
-modulate = Color(1, 1, 1, 0)
-offset_left = -77.0
-offset_top = 72.0
-offset_right = -37.0
-offset_bottom = 112.0
-scale = Vector2(1.5, 1.5)
-text = "000"
-horizontal_alignment = 1
-
-[node name="Health" type="RichTextLabel" parent="." unique_id=1625907080]
-modulate = Color(1, 1, 1, 0)
-offset_left = 16.0
-offset_top = 72.0
-offset_right = 56.0
-offset_bottom = 112.0
-scale = Vector2(1.5, 1.5)
-text = "000"
-horizontal_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1743730122]
 libraries/ = SubResource("AnimationLibrary_brehn")

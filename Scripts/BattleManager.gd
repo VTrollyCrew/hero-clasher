@@ -3,7 +3,6 @@ extends Node
 var battle_timer
 
 # This will be changed later to empty character card slot
-var empty_character_card_slots = []
 var opponent_character_cards_on_field = []
 var player_character_cards_on_field = []
 var player_characters_attacked_this_turn = []
@@ -18,73 +17,111 @@ const STARTING_HEALTH = 10			# This will be removed later since this is a charac
 var player_health
 var opponent_health
 
-# For opponents' turn check
-var is_opponent_turn = false
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	battle_timer = $"../BattleTimer"
 	battle_timer.one_shot = true
 	battle_timer.wait_time = 1.0
 	
-	player_health = STARTING_HEALTH
-	$"../PlayerHealth".text = str(player_health)
-	opponent_health = STARTING_HEALTH
-	$"../OpponentHealth".text = str(opponent_health)
+	# The below units will be handled elsewhere
+	#player_health = STARTING_HEALTH
+	#$"../PlayerHealth".text = str(player_health)
+	#opponent_health = STARTING_HEALTH
+	#$"../OpponentHealth".text = str(opponent_health)
 	
 	# To store the character card slots
 	# This will be changed later
-	empty_character_card_slots.append($"../CardSlots/OpponentCardSlot1")
-	empty_character_card_slots.append($"../CardSlots/OpponentCardSlot2")
-	empty_character_card_slots.append($"../CardSlots/OpponentCardSlot3")
-	empty_character_card_slots.append($"../CardSlots/OpponentCardSlot4")
-	empty_character_card_slots.append($"../CardSlots/OpponentCardSlot5")
+	# These will be removed in the multiplayer
+	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot1")
+	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot2")
+	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot3")
+	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot4")
+	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot5")
 	
-func direct_damage_to_opponent(damage):
-	opponent_health = max(0, opponent_health - damage)
-	$"../OpponentHealth".text = str(opponent_health)
+#func direct_damage_to_opponent(damage):
+	#opponent_health = max(0, opponent_health - damage)
+	#$"../OpponentHealth".text = str(opponent_health)
+@rpc("any_peer", "call_local")
+func sync_direct_damage(damage, target_is_opponent: bool):
+	# target_is_opponent: true if the player who CALLED the RPC is hitting their enemy
+	# In multiplayer, 'opponent_health' for the sender is 'player_health' for the receiver.
+	
+	if multiplayer.get_unique_id() == multiplayer.get_remote_sender_id() or multiplayer.get_remote_sender_id() == 0:
+		# Logic for the person who played the card
+		opponent_health = max(0, opponent_health - damage)
+		var opponent_label = get_parent().get_parent().get_node_or_null("OpponentField/OpponentHealth")
+		if opponent_label:
+			opponent_label.text = str(opponent_health)
+	else:
+		# Logic for the person receiving the hit
+		player_health = max(0, player_health - damage)
+		var player_label = get_node_or_null("../PlayerHealth")
+		if player_label:
+			player_label.text = str(player_health)
+			
+@rpc("any_peer", "call_local")
+func sync_aoe_damage_to_opponent_field(damage):
+	var cards_to_be_destroyed = []
+	var targets
+	
+	# If I am the one who called this, I target the 'opponent_character_cards_on_field'
+	# If I am the one receiving this, I target my OWN 'player_character_cards_on_field'
+	if multiplayer.get_unique_id() == multiplayer.get_remote_sender_id() or multiplayer.get_remote_sender_id() == 0:
+		targets = opponent_character_cards_on_field
+	else:
+		targets = player_character_cards_on_field
 
-func opponent_turn():
-	$"../EndTurnButton".disabled = true
-	$"../EndTurnButton".visible = false
-	
-	# To give a opponent thinking appearance
-	await wait(1.0)
-	
-	if $"../OpponentDeck".opponent_deck.size() != 0:
-		$"../OpponentDeck".draw_card()
-		await wait(1.0)
-	
-	# Check any available character zones, and play characters with the highest attack
-	if empty_character_card_slots.size() != 0:
-		await try_play_card_with_highest_attack()
-	
-	# Opponent trys to attack
-	if opponent_character_cards_on_field.size() != 0:
-		var opponent_character_cards_to_attack =  opponent_character_cards_on_field.duplicate()
-		for card in opponent_character_cards_to_attack:
-			if player_character_cards_on_field.size() != 0:
-				var card_to_attack = player_character_cards_on_field.pick_random()
-				await attack(card, card_to_attack, "Opponent")
-			else:
-				await direct_attack(card, "Opponent")
-	
-	
-	# End opponent turn
-	end_opponent_turn()
+	# Apply damage to all targets in the list
+	for card in targets:
+		card.health = max(0, card.health - damage)
+		card.get_node("Health").text = str(card.health)
+		if card.health == 0:
+			cards_to_be_destroyed.append(card)
+			
+	# Cleanup dead cards
+	for card in cards_to_be_destroyed:
+		var owner_label = "Opponent" if targets == opponent_character_cards_on_field else "Player"
+		destroy_card(card, owner_label)
 	
 # The direct attack function is not available for the future build as the game focus on character elimination style combat	
-func direct_attack(attacking_card, attacker):
-	var new_position_y
-	if attacker == "Opponent":
-		new_position_y = 1080
-	else:
-		enabling_end_turn_button(false)
-		$"../InputManager".inputs_disabled = true
-		new_position_y = 0
-		player_characters_attacked_this_turn.append(attacking_card)
+func direct_attack(attacking_card):
+	enabling_end_turn_button(false)
+	$"../InputManager".inputs_disabled = true
+	player_characters_attacked_this_turn.append(attacking_card)
 	
-	var new_position = Vector2(attacking_card.position.x, new_position_y)
+	# To collect the player ID to handle the set
+	# By default, the host ID is 1. Any clients created are given a random set of numbers
+	var player_id = multiplayer.get_unique_id()
+	
+	# Calling direct attacks
+	# Locally call it here
+	rpc("player_direct_attack_and_relay_attack_to_client_opponent", player_id, str(attacking_card))
+	await player_direct_attack_and_relay_attack_to_client_opponent(player_id, str(attacking_card))
+	
+	if attacking_card.ability_script:
+		await attacking_card.ability_script.trigger_ability(self, attacking_card, $"../InputManager", "after_attack")
+	enabling_end_turn_button(true)
+	$"../InputManager".inputs_disabled = false
+	
+@rpc("any_peer")
+func player_direct_attack_and_relay_attack_to_client_opponent(player_id, attacking_card_name):
+	var attacking_card
+	var attack_position_y
+	
+	if multiplayer.get_unique_id() == player_id:
+		attacking_card = $"../CardManager".get_node(attacking_card_name)
+		attack_position_y = 0
+	else:
+		attacking_card = get_parent().get_parent().get_node("OpponentField/CardManager/" + attacking_card_name)
+		attack_position_y = 1080
+		
+	# Save the return position NOW, before any 'awaits' happen
+	if attacking_card == null or attacking_card.card_is_in_card_slot == null:
+		return # Safety exit if the card doesn't exist or isn't in a slot
+		
+	var return_position = attacking_card.card_is_in_card_slot.position
+		
+	var new_position = Vector2(attacking_card.position.x, attack_position_y)
 	
 	attacking_card.z_index = 5
 	# To render the attacking card above everything else
@@ -93,42 +130,65 @@ func direct_attack(attacking_card, attacker):
 	tween.tween_property(attacking_card, "position", new_position, CARD_MOVE_SPEED)
 	await wait(0.15)
 	
-	if attacker == "Opponent":
+	if multiplayer.get_unique_id() == player_id:
+		opponent_health = max(0, opponent_health - attacking_card.attack)
+		get_parent().get_parent().get_node("OpponentField/OpponentHealth").text = str(opponent_health)
+		# Deal damage to opponent
+	else:
 		player_health = max(0, player_health - attacking_card.attack)
 		$"../PlayerHealth".text = str(player_health)
 		# Deal damage to player
-	else:
-		opponent_health = max(0, opponent_health - attacking_card.attack)
-		$"../OpponentHealth".text = str(opponent_health)
-		# Deal damage to opponent
 	
 	# Animete cards to position
 	var tween2 = get_tree().create_tween()
-	tween2.tween_property(attacking_card, "position", attacking_card.card_is_in_card_slot.position, CARD_MOVE_SPEED)
+	tween2.tween_property(attacking_card, "position", return_position, CARD_MOVE_SPEED)
 	
 	attacking_card.z_index = 0
 	# Note that the card_is_in_card_slot is in Card.gd
 	await wait(1.0)
-	
-	if attacker == "Player":
-		if attacking_card.ability_script:
-			await attacking_card.ability_script.trigger_ability(self, attacking_card, $"../InputManager", "after_attack")
-		enabling_end_turn_button(true)
-		$"../InputManager".inputs_disabled = false
-	
+
 # The attack function will be modified later to use the attacking card abilities/basic attacks
 # Basic attack is not defined properly in the structure yet, but will discuss
-func attack(attacking_card, defending_card, attacker):
+func attack(attacking_card, defending_card):
 	# print("Attack") 
 	# For testing purposes
-	if attacker == "Player":
-		enabling_end_turn_button(false)
-		$"../InputManager".inputs_disabled = true
-		$"../CardManager".selected_character = null
-		player_characters_attacked_this_turn.append(attacking_card)
+	enabling_end_turn_button(false)
+	$"../InputManager".inputs_disabled = true
+	$"../CardManager".selected_character = null
+	player_characters_attacked_this_turn.append(attacking_card)
+	
+	# To collect the player ID to handle the set
+	# By default, the host ID is 1. Any clients created are given a random set of numbers
+	var player_id = multiplayer.get_unique_id()
+	
+	#player_attack_and_relay_attack_to_client_opponent(player_id, str(attacking_card.name), str(defending_card.name))
+	rpc("player_attack_and_relay_attack_to_client_opponent", player_id, str(attacking_card.name), str(defending_card.name))
+		
+	if attacking_card.ability_script:
+		await attacking_card.ability_script.trigger_ability(self, attacking_card, $"../InputManager", "after_attack")
+	enabling_end_turn_button(true)
+	$"../InputManager".inputs_disabled = false
+
+@rpc("any_peer", "call_local")
+func player_attack_and_relay_attack_to_client_opponent(player_id, attacking_card_name, defending_card_name):
+	# This is to hold the attacking card
+	var attacking_card
+	var defending_card
+	var y_offset
+	
+	# This is to set the details locally
+	if multiplayer.get_unique_id() == player_id:
+		attacking_card = $"../CardManager".get_node(attacking_card_name)
+		defending_card = get_parent().get_parent().get_node("OpponentField/CardManager/" + defending_card_name)
+		y_offset = BATTLE_POSITION_OFFSET
+	else:
+		attacking_card = get_parent().get_parent().get_node("OpponentField/CardManager/" + attacking_card_name)
+		defending_card = $"../CardManager".get_node(defending_card_name)
+		y_offset = -BATTLE_POSITION_OFFSET
+		
 	
 	attacking_card.z_index = 5
-	var new_position = Vector2(defending_card.position.x, defending_card.position.y + BATTLE_POSITION_OFFSET)
+	var new_position = Vector2(defending_card.position.x, defending_card.position.y + y_offset)
 	
 	# Card moving animation
 	var tween = get_tree().create_tween()
@@ -153,10 +213,14 @@ func attack(attacking_card, defending_card, attacker):
 	
 	# This mechanic is to destroy cards when health drop to 0
 	if attacking_card.health == 0:
-		destroy_card(attacking_card, attacker)
+		if multiplayer.get_unique_id() == player_id:
+			destroy_card(attacking_card, "Player")
+		else:
+			destroy_card(attacking_card, "Opponent")
+			
 		character_card_is_destroyed = true
 	if defending_card.health == 0:
-		if attacker == "Player":
+		if multiplayer.get_unique_id() == player_id:
 			destroy_card(defending_card, "Opponent")
 		else:
 			destroy_card(defending_card, "Player")
@@ -164,66 +228,30 @@ func attack(attacking_card, defending_card, attacker):
 		
 	if character_card_is_destroyed:
 		await wait(1.0)
-		
-	if attacker == "Player":
-		if attacking_card.ability_script:
-			await attacking_card.ability_script.trigger_ability(self, attacking_card, $"../InputManager", "after_attack")
-		enabling_end_turn_button(true)
-		$"../InputManager".inputs_disabled = false
-	
-func try_play_card_with_highest_attack():
-	# For now, let opponent play a card with the highest attack
-	# Later, change this effect
-	var opponent_hand = $"../OpponentHand".opponent_hand
-	if opponent_hand.size() == 0:
-		end_opponent_turn()
-		return
-		
-	# This section takes an empty character card slot and place character cards there
-	var random_empty_character_card_slot = empty_character_card_slots.pick_random()
-	empty_character_card_slots.erase(random_empty_character_card_slot)
-	
-	# Play the card with the highest attack
-	# This will be changed later
-	var character_card_with_highest_attack = opponent_hand[0]
-	for card in opponent_hand:
-		if card.attack > character_card_with_highest_attack.attack:
-			character_card_with_highest_attack = card
-	
-	# Animate card into the card slot position
-	var tween = get_tree().create_tween()
-	tween.tween_property(character_card_with_highest_attack, "position", random_empty_character_card_slot.position, CARD_MOVE_SPEED)
-	var tween2 = get_tree().create_tween()
-	tween2.tween_property(character_card_with_highest_attack, "scale", Vector2(CARD_SIZE_REDUCE_SCALE, CARD_SIZE_REDUCE_SCALE), CARD_MOVE_SPEED)
-	character_card_with_highest_attack.get_node("AnimationPlayer").play("card_flip")
-	
-	# Remove the card from the opponent hand
-	$"../OpponentHand".remove_card_from_hand(character_card_with_highest_attack)
-	character_card_with_highest_attack.card_is_in_card_slot = random_empty_character_card_slot
-	
-	opponent_character_cards_on_field.append(character_card_with_highest_attack)
-	
-	# To give a opponent thinking appearance
-	await wait(1.0)
-
-func end_opponent_turn():
-	# Reset player deck draw
-	$"../Deck".reset_draw()
-	$"../CardManager".reset_played_character()
-	is_opponent_turn = false
-	$"../EndTurnButton".disabled = false
-	$"../EndTurnButton".visible = true
 
 func _on_end_turn_button_pressed() -> void:
-	is_opponent_turn = true
+	enabling_end_turn_button(false)
+	$"../InputManager".inputs_disabled = true
+	
 	$"../CardManager".deselect_selected_character()
 	
 	# To check all attacked cards end turn abilities 
 	for card in player_characters_attacked_this_turn:
-		card.ability_script.end_turn_ability_reset()
+		# ADD THIS CHECK: Only call if ability_script exists (is not Nil)
+		if card.ability_script != null:
+			card.ability_script.end_turn_ability_reset()
 	
 	player_characters_attacked_this_turn = []
-	opponent_turn()
+	$"../CardManager".reset_played_character()
+	
+	rpc("change_turn")
+	
+@rpc("any_peer")
+func change_turn():
+	$"../Deck".reset_draw()
+	$"../CardManager".reset_played_character
+	enabling_end_turn_button(true)
+	$"../InputManager".inputs_disabled = false
 	
 func wait(wait_time):
 	battle_timer.wait_time = wait_time
@@ -238,19 +266,24 @@ func destroy_card(card, card_owner):
 	# example: player_character_cards_on_field, opponent_character_cards_on_field
 	var new_position
 	if card_owner == "Player":
-		card.defeated = true
 		card.get_node("Area2D/CollisionShape2D").disabled = true	
 		new_position = $"../PlayerDiscard".position
 		if card in player_character_cards_on_field:
 			player_character_cards_on_field.erase(card)
-		card.card_is_in_card_slot.get_node("Area2D/CollisionShape2D").disabled = false
+		# ONLY update slot if the card actually has one (Characters have them, Items might not)
+		if card.card_is_in_card_slot != null:
+			card.card_is_in_card_slot.get_node("Area2D/CollisionShape2D").disabled = false
 	else:
-		new_position = $"../OpponentDiscard".position
+		new_position = get_parent().get_parent().get_node("OpponentField/OpponentDiscard").position
 		if card in opponent_character_cards_on_field:
 			opponent_character_cards_on_field.erase(card)
 	
-	card.card_is_in_card_slot.card_in_slot = false
-	card.card_is_in_card_slot = null
+	card.defeated = true
+	
+	# Safety check: Clear the slot reference only if it exists
+	if card.card_is_in_card_slot != null:
+		card.card_is_in_card_slot.card_in_slot = false
+		card.card_is_in_card_slot = null
 	
 	var tween = get_tree().create_tween()
 	tween.tween_property(card, "position", new_position, CARD_MOVE_SPEED)
@@ -262,7 +295,7 @@ func opponent_card_selected(defending_card):
 		if defending_card in opponent_character_cards_on_field:
 			if $"../InputManager".inputs_disabled == false:
 				$"../CardManager".selected_character = null
-				attack(attacking_card, defending_card, "Player")
+				attack(attacking_card, defending_card)
 
 func enabling_end_turn_button(is_enabled):
 	if is_enabled:

@@ -11,19 +11,20 @@ config_version=5
 [application]
 
 config/name="game-build"
-run/main_scene="uid://d2xowmdepe0w0"
+run/main_scene="uid://cqbttjrnunx2o"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 UIAnimation="*uid://cawfyydj325or"
+UserAuth="*uid://dncc10crmhjys"
+PB="*uid://b6mfb7qmrh8r"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/mode=3
 
 [editor]
 
@@ -32,7 +33,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/GUIPresser/plugin.cfg", "res://addons/godot_ui_animations/plugin.cfg", "res://addons/godot_vscode_ide/plugin.cfg")
+enabled=PackedStringArray("res://addons/GUIPresser/plugin.cfg", "res://addons/godot_ui_animations/plugin.cfg", "res://addons/godot_vscode_ide/plugin.cfg", "res://addons/pocketbase_integration/plugin.cfg")
 
 [physics]
 
