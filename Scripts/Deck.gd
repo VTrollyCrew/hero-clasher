@@ -35,6 +35,23 @@ func _ready() -> void:
 	deck_timer.wait_time = 1.0
 	
 func draw_starting_hand():
+	# Wait for the network to actually be ready
+	await get_tree().create_timer(0.5).timeout
+	
+	var size = player_deck.size()
+	var opponent_deck = get_parent().get_parent().get_node_or_null("OpponentField/OpponentDeck")
+	
+# Only call RPC if we are actually connected and the node exists
+	if opponent_deck and multiplayer.has_multiplayer_peer() and multiplayer.multiplayer_peer.get_connection_status() == MultiplayerPeer.CONNECTION_CONNECTED:
+		opponent_deck.rpc("sync_initial_deck_size", size)
+	
+# Local update for the player's view of the opponent's deck
+	if opponent_deck:
+		opponent_deck.deck_size = size
+		var opp_label = opponent_deck.get_node_or_null("RichTextLabel")
+		if opp_label:
+			opp_label.text = str(size)
+	
 	deck_timer.start()
 	await deck_timer.timeout
 	

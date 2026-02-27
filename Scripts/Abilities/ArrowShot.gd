@@ -30,7 +30,7 @@ func trigger_ability(battle_manager_reference, item_card_with_ability, input_man
 	# To keep timer
 	await battle_manager_reference.wait(1.0)
 	
-	battle_manager_reference.direct_damage_to_opponent(Arrow_DMG)
+	battle_manager_reference.rpc("sync_direct_damage", Arrow_DMG, true)
 		
 	await battle_manager_reference.wait(1.0)
 	

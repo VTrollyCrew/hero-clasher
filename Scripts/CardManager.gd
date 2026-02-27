@@ -117,15 +117,20 @@ func play_cards_in_slot_for_client_and_opponent(player_ID, card_name, card_slot_
 		# These are called only locally
 		card = get_node(card_name)
 		card_slot = $"../CardSlots".get_node(card_slot_name)
-		print(card)
+		
 		is_hovering_on_card = false	
 		player_hand_reference.remove_card_from_hand(card_being_dragged)
 		card.position = card_slot.position
 		card_slot.get_node("Area2D/CollisionShape2D").disabled = true
+		
+		if card.card_type == "Item":
+			await get_tree().create_timer(1.5).timeout 			# Give time for the animation/ability
+			$"../BattleManager".destroy_card(card, "Player")
 	else:
 		# This is the opponent side reflect
 		var opponent_field_reference = get_parent().get_parent().get_node("OpponentField/")
 		card = opponent_field_reference.get_node("CardManager/" + card_name)
+		
 		card_slot = opponent_field_reference.get_node("CardSlots/" + card_slot_name)
 		opponent_field_reference.get_node("OpponentHand").remove_card_from_hand(card)
 		
@@ -136,6 +141,10 @@ func play_cards_in_slot_for_client_and_opponent(player_ID, card_name, card_slot_
 		card.get_node("AnimationPlayer").play("card_flip")
 		
 		$"../BattleManager".opponent_character_cards_on_field.append(card)
+		
+		if card.card_type == "Item":
+			await get_tree().create_timer(1.5).timeout
+			$"../BattleManager".destroy_card(card, "Opponent")
 		
 	card.scale = Vector2(CARD_SMALLER_SCALE, CARD_SMALLER_SCALE)
 	card.z_index = -1
