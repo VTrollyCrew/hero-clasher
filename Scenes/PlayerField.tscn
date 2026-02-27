@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://of5iroc75fiv"]
 
 [ext_resource type="Script" uid="uid://qaw8wgd5r4xf" path="res://Scripts/CardManager.gd" id="1_iyrtt"]
-[ext_resource type="Script" uid="uid://rx3elkwcsokk" path="res://Scenes/GameSetup.gd" id="1_n435d"]
+[ext_resource type="Script" uid="uid://rx3elkwcsokk" path="res://Scripts/GameSetup.gd" id="1_n435d"]
 [ext_resource type="PackedScene" uid="uid://dqhkc1ms11ysl" path="res://Scenes/CardSlot.tscn" id="2_n435d"]
 [ext_resource type="Script" uid="uid://cteyy5ttsv3db" path="res://Scripts/ItemCardSlot.gd" id="3_y18dy"]
 [ext_resource type="Script" uid="uid://dkluf6h8wghjr" path="res://Scripts/PlayerHand.gd" id="4_0hw01"]

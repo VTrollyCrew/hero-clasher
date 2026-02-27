@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cqbttjrnunx2o"]
 
-[ext_resource type="Script" uid="uid://dqqp273vrctet" path="res://Scenes/Multiplayer.gd" id="1_r150o"]
+[ext_resource type="Script" uid="uid://dqqp273vrctet" path="res://Scripts/Multiplayer.gd" id="1_r150o"]
 [ext_resource type="PackedScene" uid="uid://of5iroc75fiv" path="res://Scenes/PlayerField.tscn" id="2_idj7w"]
 [ext_resource type="PackedScene" uid="uid://durv6s81jlhoc" path="res://Scenes/OpponentField.tscn" id="3_kln2b"]
 
