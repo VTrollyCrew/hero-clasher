@@ -6,7 +6,8 @@ const CARD_DRAW_SPEED = 0.2
 # This is the speed of the card draw
 const STARTING_HAND_SIZE = 7
 
-var opponent_deck = ["Knight", "BottledTornado", "BlueSlime", "Demon", "BottledTornado", "RedSlime", "RedSlime", "Knight", "Archer", "GreenSlime", "BottledTornado"]
+#var opponent_deck = ["Knight", "BottledTornado", "BlueSlime", "Demon", "BottledTornado", "RedSlime", "RedSlime", "Knight", "Archer", "GreenSlime", "BottledTornado"]
+
 # This is where the deck is saved. 
 # For now, give temporary values
 var card_database_reference
@@ -15,7 +16,7 @@ var deck_size
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	opponent_deck.shuffle()
+	#opponent_deck.shuffle()
 	#$RichTextLabel.text = str(opponent_deck.size())	# Will be initiated elsewhere
 	# This returns how many cards are left in the deck
 	card_database_reference = preload("res://Scripts/CardDatabase.gd")
@@ -26,29 +27,35 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func draw_card():
+func draw_card(name_of_drawn_card):
 	#print("Draw Card") 
 	# For debugging
 		
-	var card_drawn_name = opponent_deck[0]
-	opponent_deck.erase(card_drawn_name)
+	#var card_drawn_name = opponent_deck[0]
+	#opponent_deck.erase(card_drawn_name)
 	
 	# This is to the scenario when the last card of the deck is drawn
-	if opponent_deck.size() == 0:
-		$Sprite2D.visible = false
-		$RichTextLabel.visible = false
+	#if opponent_deck.size() == 0:
+		#$Sprite2D.visible = false
+		#$RichTextLabel.visible = false
 		
-	$RichTextLabel.text = str(opponent_deck.size())
+	#$RichTextLabel.text = str(opponent_deck.size())
+	# This updates the deck size text and count
+	if deck_size - 1 == 0:
+		visible = false
+	else:
+		deck_size -= 1
+		$RichTextLabel.text = str(deck_size)
 	
 	var card_scene = preload(CARD_SCENE_PATH)
 	var new_card = card_scene.instantiate()
 	# instantiate() buils a new card object out of the pre loaded cards
 	
-	var card_image_path = str("res://Resources/Cards/" + card_drawn_name + "Card.png")
+	var card_image_path = str("res://Resources/Cards/" + name_of_drawn_card + "Card.png")
 	new_card.get_node("CardImage").texture = load(card_image_path)
 	# This reads the image using the patterned name method and load the image asset
 	
-	new_card.card_type = card_database_reference.CARDS[card_drawn_name][2]
+	new_card.card_type = card_database_reference.CARDS[name_of_drawn_card][2]
 	
 	if new_card.card_type == "Character":
 	# This checks whether the new card is a character
@@ -56,8 +63,8 @@ func draw_card():
 		# This will be modified later
 		new_card.get_node("Ability").visible = false
 		
-		new_card.health = card_database_reference.CARDS[card_drawn_name][0]
-		new_card.attack = card_database_reference.CARDS[card_drawn_name][1]
+		new_card.health = card_database_reference.CARDS[name_of_drawn_card][0]
+		new_card.attack = card_database_reference.CARDS[name_of_drawn_card][1]
 		# This loads the details of the card from the CardDatabase
 		
 		new_card.get_node("Attack").text = str(new_card.attack)
@@ -65,10 +72,10 @@ func draw_card():
 		# This is for the richtext to display the data
 	elif new_card.card_type == "Item":
 	# This checks whether the new card is an item
-		new_card.get_node("Ability").visible = true
 		new_card.get_node("Attack").visible = false
 		new_card.get_node("Health").visible = false
-		new_card.get_node("Ability").text = card_database_reference.CARDS[card_drawn_name][3]
+		new_card.get_node("Ability").text = card_database_reference.CARDS[name_of_drawn_card][3]
+		new_card.get_node("Ability").visible = false
 	else:
 		pass
 	

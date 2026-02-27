@@ -143,5 +143,3 @@ scale = Vector2(0.7, 0.7)
 [node name="Sprite2D" type="Sprite2D" parent="PlayerDiscard" unique_id=936876558]
 scale = Vector2(0.96825445, 0.9047634)
 texture = ExtResource("9_003et")
-
-[connection signal="pressed" from="EndTurnButton" to="BattleManager" method="_on_end_turn_button_pressed"]

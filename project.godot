@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="game-build"
-run/main_scene="uid://d2xowmdepe0w0"
+run/main_scene="uid://cqbttjrnunx2o"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 

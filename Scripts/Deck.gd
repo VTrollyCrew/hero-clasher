@@ -38,48 +38,49 @@ func draw_starting_hand():
 	deck_timer.start()
 	await deck_timer.timeout
 	
-	deck_timer.wait_time = 0.2
+	deck_timer.wait_time = 0.1
 	
 	# To collect the player ID to handle the set
 	# By default, the host ID is 1. Any clients created are given a random set of numbers
 	var player_id = multiplayer.get_unique_id()
 	
 	for i in range(STARTING_HAND_SIZE):
-		draw_both_client_player_and_client_opponent(player_id)
-		rpc("draw_both_client_player_and_client_opponent", player_id)
+		var name_of_drawn_card = player_deck[0]
+		draw_both_client_player_and_client_opponent(player_id, name_of_drawn_card)
+		rpc("draw_both_client_player_and_client_opponent", player_id, name_of_drawn_card)
 		is_card_drawn_this_turn = false
 		
 		deck_timer.start()
-		await  deck_timer.timeout()
+		await deck_timer.timeout
 	is_card_drawn_this_turn = true
 	
 	# In order to proceed, the same must be replicated in the client opponent side as well
 	
 @rpc("any_peer")
-func draw_both_client_player_and_client_opponent(Player_ID):
+func draw_both_client_player_and_client_opponent(Player_ID, name_of_drawn_card):
 	# This is to check who is running the script
 	if multiplayer.get_unique_id() == Player_ID:
 		# To draw cards locally
-		draw_card()
+		draw_card(name_of_drawn_card)
 	else:
 		# To draw cards to the clients
-		get_parent().get_parent().get_node("OpponentField/OpponentDeck").draw_card()
+		get_parent().get_parent().get_node("OpponentField/OpponentDeck").draw_card(name_of_drawn_card)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func draw_card():
+func draw_card(name_of_drawn_card):
 	#print("Draw Card") 
 	# For debugging
 
 	is_card_drawn_this_turn = true
-	var card_drawn_name = player_deck[0]
-	player_deck.erase(card_drawn_name)
+	player_deck.erase(name_of_drawn_card)
 	
 	# This is to the scenario when the last card of the deck is drawn
 	if player_deck.size() == 0:
 		$Area2D/CollisionShape2D.disabled = true
-		$Sprite2D.visible = false
-		$RichTextLabel.visible = false
+		#$Sprite2D.visible = false
+		#$RichTextLabel.visible = false
+		visible = false
 		
 	$RichTextLabel.text = str(player_deck.size())
 	
@@ -87,18 +88,18 @@ func draw_card():
 	var new_card = card_scene.instantiate()
 	# instantiate() buils a new card object out of the pre loaded cards
 	
-	var card_image_path = str("res://Resources/Cards/" + card_drawn_name + "Card.png")
+	var card_image_path = str("res://Resources/Cards/" + name_of_drawn_card + "Card.png")
 	new_card.get_node("CardImage").texture = load(card_image_path)
 	# This reads the image using the patterned name method and load the image asset
 	
-	new_card.card_type = card_database_reference.CARDS[card_drawn_name][2]
+	new_card.card_type = card_database_reference.CARDS[name_of_drawn_card][2]
 	
 	if new_card.card_type == "Character":
 	# This checks whether the new card is a character
 		# For now, this sets the visibility of the ability text to false
 		
-		new_card.health = card_database_reference.CARDS[card_drawn_name][0]
-		new_card.attack = card_database_reference.CARDS[card_drawn_name][1]
+		new_card.health = card_database_reference.CARDS[name_of_drawn_card][0]
+		new_card.attack = card_database_reference.CARDS[name_of_drawn_card][1]
 		# This loads the details of the card from the CardDatabase
 		
 		new_card.get_node("Attack").text = str(new_card.attack)
@@ -113,10 +114,10 @@ func draw_card():
 		pass
 	
 	# Card ability related
-	var new_card_ability_script_path = card_database_reference.CARDS[card_drawn_name][4]
+	var new_card_ability_script_path = card_database_reference.CARDS[name_of_drawn_card][4]
 	if new_card_ability_script_path:
 		new_card.ability_script = load(new_card_ability_script_path).new()			# Instantiate
-		new_card.get_node("Ability").text = card_database_reference.CARDS[card_drawn_name][3]
+		new_card.get_node("Ability").text = card_database_reference.CARDS[name_of_drawn_card][3]
 	else:
 		new_card.get_node("Ability").visible = false
 	
@@ -130,10 +131,11 @@ func deck_clicked():
 	if is_card_drawn_this_turn:
 		return
 		
+	var name_of_drawn_card = player_deck[0]
 	var player_id = multiplayer.get_unique_id()
 	
-	draw_both_client_player_and_client_opponent(player_id)
-	rpc("draw_both_client_player_and_client_opponent", player_id)
+	draw_both_client_player_and_client_opponent(player_id, name_of_drawn_card)
+	rpc("draw_both_client_player_and_client_opponent", player_id, name_of_drawn_card)
 
 func reset_draw():
 	is_card_drawn_this_turn = false
