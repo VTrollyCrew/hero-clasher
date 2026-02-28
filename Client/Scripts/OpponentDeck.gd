@@ -1,6 +1,6 @@
 extends Node2D
 
-const CARD_SCENE_PATH = "res://Scenes/OpponentCard.tscn"
+const CARD_SCENE_PATH = "res://Client/Scenes/OpponentCard.tscn"
 # This is the card scene path
 const CARD_DRAW_SPEED = 0.2
 # This is the speed of the card draw
@@ -24,7 +24,7 @@ func _ready() -> void:
 	#opponent_deck.shuffle()
 	#$RichTextLabel.text = str(opponent_deck.size())	# Will be initiated elsewhere
 	# This returns how many cards are left in the deck
-	card_database_reference = preload("res://Scripts/CardDatabase.gd")
+	card_database_reference = preload("res://Shared/Scripts/CardDatabase.gd")
 	
 	# This will be handled soon
 	#for i in range(STARTING_HAND_SIZE):

@@ -1,7 +1,10 @@
 extends Node2D
 
 # This is the card scene path
-const CARD_SCENE_PATH = "res://Scenes/Card.tscn"
+const CARD_SCENE_PATH = "res://Client/Scenes/Card.tscn"
+
+const CARD_DATABASE_PATH = "res://Shared/Scripts/CardDatabase.gd"
+
 # This is the speed of the card draw
 const CARD_DRAW_SPEED = 0.2
 # This is the starting hand count
@@ -19,9 +22,9 @@ var deck_timer
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	player_deck.shuffle()
-	#$RichTextLabel.text = str(player_deck.size())		# Will be initiated elsewhere
+
 	# This returns how many cards are left in the deck
-	card_database_reference = preload("res://Scripts/CardDatabase.gd")
+	card_database_reference = preload(CARD_DATABASE_PATH)
 	
 	# This will be handled soon
 	#for i in range(STARTING_HAND_SIZE):

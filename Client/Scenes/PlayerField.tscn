@@ -1,14 +1,14 @@
 [gd_scene format=3 uid="uid://of5iroc75fiv"]
 
-[ext_resource type="Script" uid="uid://qaw8wgd5r4xf" path="res://Scripts/CardManager.gd" id="1_iyrtt"]
-[ext_resource type="Script" uid="uid://rx3elkwcsokk" path="res://Scenes/GameSetup.gd" id="1_n435d"]
-[ext_resource type="PackedScene" uid="uid://dqhkc1ms11ysl" path="res://Scenes/CardSlot.tscn" id="2_n435d"]
-[ext_resource type="Script" uid="uid://cteyy5ttsv3db" path="res://Scripts/ItemCardSlot.gd" id="3_y18dy"]
-[ext_resource type="Script" uid="uid://dkluf6h8wghjr" path="res://Scripts/PlayerHand.gd" id="4_0hw01"]
-[ext_resource type="Script" uid="uid://q7iqmf0m5w07" path="res://Scripts/InputManager.gd" id="5_31q26"]
-[ext_resource type="Script" uid="uid://brw6q2g72ql4r" path="res://Scripts/Deck.gd" id="6_r265d"]
+[ext_resource type="Script" uid="uid://qaw8wgd5r4xf" path="res://Server/Scripts/CardManager.gd" id="1_iyrtt"]
+[ext_resource type="Script" uid="uid://rx3elkwcsokk" path="res://Server/Scripts/GameSetup.gd" id="1_n435d"]
+[ext_resource type="PackedScene" uid="uid://dqhkc1ms11ysl" path="res://Client/Scenes/CardSlot.tscn" id="2_n435d"]
+[ext_resource type="Script" uid="uid://cteyy5ttsv3db" path="res://Client/Scripts/ItemCardSlot.gd" id="3_y18dy"]
+[ext_resource type="Script" uid="uid://dkluf6h8wghjr" path="res://Client/Scripts/PlayerHand.gd" id="4_0hw01"]
+[ext_resource type="Script" uid="uid://q7iqmf0m5w07" path="res://Client/Scripts/InputManager.gd" id="5_31q26"]
+[ext_resource type="Script" uid="uid://brw6q2g72ql4r" path="res://Client/Scripts/Deck.gd" id="6_r265d"]
 [ext_resource type="Texture2D" uid="uid://bgfln7vkod0a1" path="res://Resources/Cards/Decks/Deck.png" id="7_xpgre"]
-[ext_resource type="Script" uid="uid://yjlwqvgy1h43" path="res://Scripts/BattleManager.gd" id="8_4sosm"]
+[ext_resource type="Script" uid="uid://yjlwqvgy1h43" path="res://Server/Scripts/BattleManager.gd" id="8_4sosm"]
 [ext_resource type="Texture2D" uid="uid://l5pon7jksw7t" path="res://Resources/CardSlot/CardSlot.png" id="9_003et"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0ip7d"]
@@ -143,3 +143,5 @@ scale = Vector2(0.7, 0.7)
 [node name="Sprite2D" type="Sprite2D" parent="PlayerDiscard" unique_id=936876558]
 scale = Vector2(0.96825445, 0.9047634)
 texture = ExtResource("9_003et")
+
+[connection signal="pressed" from="EndTurnButton" to="BattleManager" method="_on_end_turn_button_pressed"]

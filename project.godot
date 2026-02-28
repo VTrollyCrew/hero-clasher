@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+AuthManager="*uid://3e1se3n717n"
 UIAnimation="*uid://cawfyydj325or"
 UserAuth="*uid://dncc10crmhjys"
 PB="*uid://b6mfb7qmrh8r"

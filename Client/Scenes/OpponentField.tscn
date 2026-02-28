@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://durv6s81jlhoc"]
 
-[ext_resource type="PackedScene" uid="uid://h6o2dvenyoby" path="res://Scenes/OpponentCardSlot.tscn" id="2_6co0t"]
-[ext_resource type="Script" uid="uid://dvfmjs24xkop8" path="res://Scripts/OpponentHand.gd" id="3_1vcqv"]
-[ext_resource type="Script" uid="uid://le268l4ukl5r" path="res://Scripts/OpponentDeck.gd" id="4_gd4hq"]
+[ext_resource type="PackedScene" uid="uid://h6o2dvenyoby" path="res://Client/Scenes/OpponentCardSlot.tscn" id="2_6co0t"]
+[ext_resource type="Script" uid="uid://dvfmjs24xkop8" path="res://Client/Scripts/OpponentHand.gd" id="3_1vcqv"]
+[ext_resource type="Script" uid="uid://le268l4ukl5r" path="res://Client/Scripts/OpponentDeck.gd" id="4_gd4hq"]
 [ext_resource type="Texture2D" uid="uid://bgfln7vkod0a1" path="res://Resources/Cards/Decks/Deck.png" id="5_j3x2b"]
 [ext_resource type="Texture2D" uid="uid://l5pon7jksw7t" path="res://Resources/CardSlot/CardSlot.png" id="6_j3eqn"]
 

@@ -1,8 +1,11 @@
-[gd_scene format=3 uid="uid://dp8dmqmiqj4gt"]
+[gd_scene format=3 uid="uid://bd7d3cu2qc452"]
 
-[ext_resource type="Script" uid="uid://cfj4eqsm1i37w" path="res://Scripts/OpponentCard.gd" id="1_qrb68"]
-[ext_resource type="Texture2D" uid="uid://dvhb2jpuoxmxu" path="res://Resources/Cards/CardBack/CardBack.png" id="2_r8ami"]
-[ext_resource type="Texture2D" uid="uid://choujsnkj3k1l" path="res://Resources/Cards/DemonCard.png" id="3_0rmfg"]
+[ext_resource type="Texture2D" uid="uid://choujsnkj3k1l" path="res://Resources/Cards/DemonCard.png" id="1_kikvd"]
+[ext_resource type="Script" uid="uid://boql3qpomgm35" path="res://Shared/Scripts/Card.gd" id="1_rjlel"]
+[ext_resource type="Texture2D" uid="uid://dvhb2jpuoxmxu" path="res://Resources/Cards/CardBack/CardBack.png" id="2_brehn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rjlel"]
+size = Vector2(158, 221.5)
 
 [sub_resource type="Animation" id="Animation_eumee"]
 length = 0.001
@@ -160,44 +163,47 @@ _data = {
 &"card_flip": SubResource("Animation_wf8id")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_qrb68"]
-size = Vector2(157.33334, 221.33334)
-
 [node name="Card" type="Node2D" unique_id=1752829942]
-position = Vector2(90, 105)
+position = Vector2(1827, 960)
 scale = Vector2(0.75, 0.75)
-script = ExtResource("1_qrb68")
+script = ExtResource("1_rjlel")
 
 [node name="CardBackImage" type="Sprite2D" parent="." unique_id=382928070]
 position = Vector2(-1.5258789e-05, 0.20007144)
 scale = Vector2(0.2106665, 0.21104757)
-texture = ExtResource("2_r8ami")
+texture = ExtResource("2_brehn")
 
 [node name="CardImage" type="Sprite2D" parent="." unique_id=1778736533]
 z_index = -1
 scale = Vector2(0.21066666, 0.21066664)
-texture = ExtResource("3_0rmfg")
+texture = ExtResource("1_kikvd")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=664739832]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=649798665]
+position = Vector2(0, 0.25)
+shape = SubResource("RectangleShape2D_rjlel")
 
 [node name="Attack" type="RichTextLabel" parent="." unique_id=1867576426]
 modulate = Color(1, 1, 1, 0)
-offset_left = -71.66667
-offset_top = -103.99998
-offset_right = -31.666672
-offset_bottom = -63.999977
+offset_left = -69.33323
+offset_top = -105.33327
+offset_right = -35.55552
+offset_bottom = -68.88887
 scale = Vector2(1.5, 1.5)
 text = "000"
 
 [node name="Health" type="RichTextLabel" parent="." unique_id=1625907080]
 modulate = Color(1, 1, 1, 0)
-offset_left = 10.667007
-offset_top = -104.0
-offset_right = 50.667007
-offset_bottom = -64.0
+offset_left = 18.666666
+offset_top = -105.33327
+offset_right = 51.55558
+offset_bottom = -68.88887
 scale = Vector2(1.5, 1.5)
 text = "000"
 horizontal_alignment = 2
 
-[node name="Ability" type="RichTextLabel" parent="." unique_id=1081422047]
+[node name="Ability" type="RichTextLabel" parent="." unique_id=1641957711]
 offset_left = -72.0
 offset_top = 40.0
 offset_right = 70.66667
@@ -206,9 +212,5 @@ offset_bottom = 102.66667
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1743730122]
 libraries/ = SubResource("AnimationLibrary_brehn")
 
-[node name="Area2D" type="Area2D" parent="." unique_id=938583781]
-collision_layer = 8
-collision_mask = 8
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=147744637]
-shape = SubResource("RectangleShape2D_qrb68")
+[connection signal="mouse_entered" from="Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="Area2D" to="." method="_on_area_2d_mouse_exited"]

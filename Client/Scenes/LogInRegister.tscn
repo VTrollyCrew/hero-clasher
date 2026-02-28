@@ -1,0 +1,130 @@
+[gd_scene format=3 uid="uid://di53iw047jxae"]
+
+[ext_resource type="Script" uid="uid://dj4fhjand0848" path="res://Client/Scripts/LoginRegister.gd" id="1_xow4b"]
+[ext_resource type="Texture2D" uid="uid://m047xh3arxh" path="res://Resources/Button/ButtonNormal.png" id="2_fubbi"]
+[ext_resource type="Texture2D" uid="uid://b50umyhgpv5k4" path="res://Resources/Button/ButtonPressed.png" id="3_js5a7"]
+[ext_resource type="Texture2D" uid="uid://b3jfnfjokp2ra" path="res://Resources/Button/ButtonHover.png" id="4_smc64"]
+[ext_resource type="Texture2D" uid="uid://bhvpkb4cxtdow" path="res://Resources/Button/ButtonDisabled.png" id="5_3p121"]
+
+[node name="LogInRegister" type="Control" unique_id=138583409]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xow4b")
+metadata/_edit_vertical_guides_ = [960.0]
+metadata/_edit_horizontal_guides_ = [540.0]
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1824984896]
+visible = false
+layout_mode = 0
+offset_left = 319.0
+offset_top = 204.0
+offset_right = 1602.0
+offset_bottom = 881.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=691120186]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="Login_Email_Set" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=348260215]
+layout_mode = 2
+
+[node name="Login" type="Label" parent="CenterContainer/VBoxContainer/Login_Email_Set" unique_id=100104492]
+layout_mode = 2
+text = "Login"
+
+[node name="EmailInput" type="LineEdit" parent="CenterContainer/VBoxContainer/Login_Email_Set" unique_id=737727297]
+layout_mode = 2
+placeholder_text = "Email Address"
+
+[node name="Login_Password_Set" type="VBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=363380636]
+layout_mode = 2
+
+[node name="Password" type="Label" parent="CenterContainer/VBoxContainer/Login_Password_Set" unique_id=1560221528]
+layout_mode = 2
+text = "Password"
+
+[node name="PasswordInput" type="LineEdit" parent="CenterContainer/VBoxContainer/Login_Password_Set" unique_id=1360884907]
+layout_mode = 2
+placeholder_text = "Password"
+secret = true
+
+[node name="ButtonSets" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1898984246]
+layout_mode = 2
+
+[node name="LoginButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonSets" unique_id=860446915]
+layout_mode = 2
+text = "Login"
+
+[node name="RegisterButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonSets" unique_id=1004658522]
+layout_mode = 2
+text = "Register"
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1522277073]
+custom_minimum_size = Vector2(400, 525)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -262.5
+offset_right = 200.0
+offset_bottom = 262.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="NinePatchRect" unique_id=1479318619]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 35
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 35
+theme_override_constants/margin_bottom = 45
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect/MarginContainer" unique_id=1522963308]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="NinePatchRect/MarginContainer/VBoxContainer" unique_id=317337619]
+layout_mode = 2
+text = "Hero Clasher"
+
+[node name="UsernameLabel" type="Label" parent="NinePatchRect/MarginContainer/VBoxContainer" unique_id=2083862929]
+layout_mode = 2
+text = "Email"
+
+[node name="UsernameLineEdit" type="LineEdit" parent="NinePatchRect/MarginContainer/VBoxContainer" unique_id=1958522836]
+layout_mode = 2
+
+[node name="PasswordLabel" type="Label" parent="NinePatchRect/MarginContainer/VBoxContainer" unique_id=1814739754]
+layout_mode = 2
+text = "Password"
+
+[node name="PasswordLineEdit" type="LineEdit" parent="NinePatchRect/MarginContainer/VBoxContainer" unique_id=1653332236]
+layout_mode = 2
+
+[node name="LoginButton" type="TextureButton" parent="NinePatchRect/MarginContainer/VBoxContainer" unique_id=258177385]
+custom_minimum_size = Vector2(220, 50)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("2_fubbi")
+texture_pressed = ExtResource("3_js5a7")
+texture_hover = ExtResource("4_smc64")
+texture_disabled = ExtResource("5_3p121")
+ignore_texture_size = true
+
+[node name="LoginLabel" type="Label" parent="NinePatchRect/MarginContainer/VBoxContainer/LoginButton" unique_id=1878491843]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonSets/LoginButton" to="." method="_on_login_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonSets/RegisterButton" to="." method="_on_register_button_pressed"]
