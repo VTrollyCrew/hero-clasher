@@ -1,0 +1,184 @@
+[gd_scene format=3 uid="uid://c2wc5ftip6bx7"]
+
+[ext_resource type="Script" uid="uid://duu5gpp4h1bo0" path="res://Client/Scripts/MainMenu.gd" id="1_e5h6n"]
+[ext_resource type="Texture2D" uid="uid://bi02vccxemjkf" path="res://Resources/Wallpaper/PlaceholderWallpaper1.jpg" id="2_m7rth"]
+[ext_resource type="FontFile" uid="uid://bemesjr3qpkx8" path="res://Resources/Fonts/monogram-extended.ttf" id="3_6jes3"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nqurr"]
+texture = ExtResource("2_m7rth")
+modulate_color = Color(0.8431839, 0.8431839, 0.84318376, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_17u0m"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 40
+corner_radius_bottom_right = 40
+shadow_color = Color(0, 0, 0, 1)
+shadow_size = 1
+shadow_offset = Vector2(5, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m7rth"]
+bg_color = Color(0.66656864, 0.6665687, 0.66656864, 1)
+corner_radius_top_left = 40
+corner_radius_bottom_right = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6jes3"]
+bg_color = Color(0.74138474, 0.7413847, 0.74138457, 1)
+corner_radius_top_left = 40
+corner_radius_bottom_right = 40
+shadow_color = Color(0, 0, 0, 1)
+shadow_size = 1
+shadow_offset = Vector2(5, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nqurr"]
+bg_color = Color(0.6666667, 0.6666667, 0.6666667, 1)
+corner_radius_top_left = 40
+corner_radius_bottom_right = 40
+
+[node name="MainMenu" type="Control" unique_id=989473248]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+script = ExtResource("1_e5h6n")
+
+[node name="Panel" type="Panel" parent="." unique_id=825268329]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_nqurr")
+
+[node name="Logo" type="Label" parent="." unique_id=1252148507]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -458.0
+offset_top = -272.0
+offset_right = 502.0
+offset_bottom = -69.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_colors/font_shadow_color = Color(0.60565853, 0.70142114, 0.8206923, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 17
+theme_override_fonts/font = ExtResource("3_6jes3")
+theme_override_font_sizes/font_size = 256
+text = "HERO CLASH"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1001395662]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -131.5
+offset_top = 14.0
+offset_right = 175.5
+offset_bottom = 340.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 15
+
+[node name="BeginButton" type="Button" parent="VBoxContainer" unique_id=620709243]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_6jes3")
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxFlat_17u0m")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_m7rth")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6jes3")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_nqurr")
+text = "BEGIN"
+
+[node name="DecksButton" type="Button" parent="VBoxContainer" unique_id=1935304734]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_6jes3")
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxFlat_17u0m")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_m7rth")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6jes3")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_nqurr")
+text = "DECKS"
+
+[node name="OptionsButton" type="Button" parent="VBoxContainer" unique_id=1650522061]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_6jes3")
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxFlat_17u0m")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_m7rth")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6jes3")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_nqurr")
+text = "OPTIONS"
+
+[node name="ExitButton" type="Button" parent="VBoxContainer" unique_id=849897774]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_6jes3")
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxFlat_17u0m")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_m7rth")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6jes3")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_nqurr")
+text = "EXIT"
+
+[node name="Control" type="Control" parent="." unique_id=727021391]
+anchors_preset = 0
+offset_left = 78.0
+offset_top = 60.0
+offset_right = 534.0
+offset_bottom = 184.0
+
+[node name="UsernameLabel" type="Label" parent="Control" unique_id=1387216313]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 36.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("3_6jes3")
+theme_override_font_sizes/font_size = 44
+text = "Welcome User"
+vertical_alignment = 1
+
+[node name="StatsLabel" type="Label" parent="Control" unique_id=763128756]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -18.0
+offset_bottom = 18.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_6jes3")
+theme_override_font_sizes/font_size = 44
+text = "Coins"
+vertical_alignment = 1
