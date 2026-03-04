@@ -34,6 +34,32 @@ bg_color = Color(0.6666667, 0.6666667, 0.6666667, 1)
 corner_radius_top_left = 40
 corner_radius_bottom_right = 40
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_k7th4"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 40
+corner_radius_bottom_right = 40
+shadow_color = Color(0, 0, 0, 1)
+shadow_size = 1
+shadow_offset = Vector2(5, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wo8ox"]
+bg_color = Color(0.66656864, 0.6665687, 0.66656864, 1)
+corner_radius_top_left = 40
+corner_radius_bottom_right = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oxnt4"]
+bg_color = Color(0.74138474, 0.7413847, 0.74138457, 1)
+corner_radius_top_left = 40
+corner_radius_bottom_right = 40
+shadow_color = Color(0, 0, 0, 1)
+shadow_size = 1
+shadow_offset = Vector2(5, 5)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_avlsd"]
+bg_color = Color(0.6666667, 0.6666667, 0.6666667, 1)
+corner_radius_top_left = 40
+corner_radius_bottom_right = 40
+
 [node name="MainMenu" type="Control" unique_id=989473248]
 layout_mode = 3
 anchors_preset = 0
@@ -150,14 +176,14 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_6jes3")
 theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_nqurr")
 text = "EXIT"
 
-[node name="Control" type="Control" parent="." unique_id=727021391]
+[node name="UserStats" type="Control" parent="." unique_id=1613509080]
 anchors_preset = 0
 offset_left = 78.0
 offset_top = 60.0
 offset_right = 534.0
-offset_bottom = 184.0
+offset_bottom = 194.0
 
-[node name="UsernameLabel" type="Label" parent="Control" unique_id=1387216313]
+[node name="UsernameLabel" type="Label" parent="UserStats" unique_id=1387216313]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -168,7 +194,7 @@ theme_override_font_sizes/font_size = 44
 text = "Welcome User"
 vertical_alignment = 1
 
-[node name="StatsLabel" type="Label" parent="Control" unique_id=763128756]
+[node name="StatsLabel" type="Label" parent="UserStats" unique_id=763128756]
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -182,3 +208,25 @@ theme_override_fonts/font = ExtResource("3_6jes3")
 theme_override_font_sizes/font_size = 44
 text = "Coins"
 vertical_alignment = 1
+
+[node name="ConnectButton" type="Button" parent="UserStats" unique_id=113086548]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -44.0
+offset_right = 222.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_6jes3")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_k7th4")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_wo8ox")
+theme_override_styles/hover = SubResource("StyleBoxFlat_oxnt4")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_avlsd")
+text = "Connect To VTrolly Account"
+
+[connection signal="pressed" from="UserStats/ConnectButton" to="." method="_on_connect_button_pressed"]

@@ -10,13 +10,13 @@ func _on_register_button_pressed():
 	
 	# 1. Check Email
 	if not AuthManager.is_valid_email(email):
-		AuthManager.show_message("Please enter a valid email address.")
+		AuthManager.show_message("Registration Error", "Please enter a valid email address.")
 		return
 		
 	# 2. Check Password Strength
 	var password_issue = AuthManager.is_strong_password(password)
 	if password_issue != "":
-		AuthManager.show_message(password_issue)
+		AuthManager.show_message("Registration Error", password_issue)
 		return
 	
 	if email.is_empty() or password.length() < 8:
@@ -33,7 +33,7 @@ func _on_log_in_button_pressed() -> void:
 	print("Attempting to login with: ", email) # <--- ADD THIS
 	
 	if email.is_empty() or password.is_empty():
-		AuthManager.show_message("Please fill in all fields.")
+		AuthManager.show_message("Login Error", "Please fill in all fields.")
 		return
 	
 	AuthManager.login_user(email, password)

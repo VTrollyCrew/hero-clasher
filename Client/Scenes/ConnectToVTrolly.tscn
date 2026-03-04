@@ -1,0 +1,162 @@
+[gd_scene format=3 uid="uid://dm88ntsbun70g"]
+
+[ext_resource type="Script" uid="uid://5sivkb7213q7" path="res://Client/Scripts/ConnectAccount.gd" id="1_hwgba"]
+[ext_resource type="FontFile" uid="uid://846xqi7ed0i7" path="res://Resources/Fonts/monogram.ttf" id="2_vavon"]
+[ext_resource type="FontFile" uid="uid://bemesjr3qpkx8" path="res://Resources/Fonts/monogram-extended.ttf" id="3_fkec0"]
+[ext_resource type="Texture2D" uid="uid://bgfvy5qlyyxti" path="res://Resources/Button/button_normal_rescale.png" id="4_ue67b"]
+[ext_resource type="Texture2D" uid="uid://bj6wyjjhmd2x4" path="res://Resources/Button/button_pressed_rescale.png" id="5_sannv"]
+[ext_resource type="Texture2D" uid="uid://c1cdwx2y0d7yr" path="res://Resources/Button/button_hovered_rescale.png" id="6_741fl"]
+[ext_resource type="Texture2D" uid="uid://dt2shrb2oipwx" path="res://Resources/Button/button_disabled_rescale.png" id="7_4axcf"]
+
+[node name="VTrollyConnector" type="Control" unique_id=138583409]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hwgba")
+metadata/_edit_vertical_guides_ = [960.0]
+metadata/_edit_horizontal_guides_ = [540.0]
+
+[node name="TitleHolder" type="NinePatchRect" parent="." unique_id=335559887]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.17400001
+anchor_right = 0.5
+anchor_bottom = 0.17400001
+offset_left = -335.0
+offset_top = -81.92001
+offset_right = 335.0
+offset_bottom = 82.07999
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TitleLabel" type="Label" parent="TitleHolder" unique_id=317337619]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.50100005
+anchor_top = 0.24100001
+anchor_right = 0.50100005
+anchor_bottom = 0.24100001
+offset_left = -278.67004
+offset_top = -49.524002
+offset_right = 279.32996
+offset_bottom = 49.475998
+theme_override_fonts/font = ExtResource("2_vavon")
+theme_override_font_sizes/font_size = 112
+text = "Hero Clasher"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="." unique_id=1522277073]
+custom_minimum_size = Vector2(400, 525)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -262.5
+offset_right = 200.0
+offset_bottom = 262.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="NinePatchRect" unique_id=1902414391]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -215.0
+offset_right = 200.0
+offset_bottom = 215.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LabelPart1" type="Label" parent="NinePatchRect/VBoxContainer" unique_id=2065056701]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("3_fkec0")
+theme_override_font_sizes/font_size = 19
+text = "Please enter your VTrolly credentials below 
+to sync the account.
+Note that one VTrolly ccount can be synced 
+to one account."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelPart2" type="Label" parent="NinePatchRect/VBoxContainer" unique_id=750676282]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 6
+theme_override_fonts/font = ExtResource("3_fkec0")
+theme_override_font_sizes/font_size = 19
+text = "You can gain the following benefits from syncing 
+your account"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TitleDataMargin" type="MarginContainer" parent="NinePatchRect/VBoxContainer" unique_id=998084023]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="UsernameLabel" type="Label" parent="NinePatchRect/VBoxContainer" unique_id=2083862929]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_fkec0")
+theme_override_font_sizes/font_size = 32
+text = "Email"
+
+[node name="UsernameLineEdit" type="LineEdit" parent="NinePatchRect/VBoxContainer" unique_id=1958522836]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_fkec0")
+theme_override_font_sizes/font_size = 30
+
+[node name="PasswordLabel" type="Label" parent="NinePatchRect/VBoxContainer" unique_id=1814739754]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_fkec0")
+theme_override_font_sizes/font_size = 32
+text = "Password"
+
+[node name="PasswordLineEdit" type="LineEdit" parent="NinePatchRect/VBoxContainer" unique_id=1653332236]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_fkec0")
+theme_override_font_sizes/font_size = 30
+secret = true
+secret_character = "*"
+
+[node name="DataButtonMargin" type="MarginContainer" parent="NinePatchRect/VBoxContainer" unique_id=241405393]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+
+[node name="LogInButton" type="TextureButton" parent="NinePatchRect/VBoxContainer" unique_id=2058702278]
+custom_minimum_size = Vector2(220, 91.5)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("4_ue67b")
+texture_pressed = ExtResource("5_sannv")
+texture_hover = ExtResource("6_741fl")
+texture_disabled = ExtResource("7_4axcf")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="NinePatchRect/VBoxContainer/LogInButton" unique_id=543255573]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_fkec0")
+theme_override_font_sizes/font_size = 24
+text = "LOGIN"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="NinePatchRect/VBoxContainer/LogInButton" to="." method="_on_log_in_button_pressed"]

@@ -7,15 +7,31 @@
 script = ExtResource("1_pggs2")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=633364082]
-offset_right = 658.0
-offset_bottom = 297.0
-metadata/_edit_use_anchors_ = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -329.0
+offset_top = -148.5
+offset_right = 329.0
+offset_bottom = 148.5
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=439511155]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 36
+
+[node name="MainLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=716493936]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_7cxsl")
+theme_override_font_sizes/font_size = 40
+text = "Test Main"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="MessageLabel" type="Label" parent="PanelContainer/VBoxContainer" unique_id=1915037450]
 layout_mode = 2
