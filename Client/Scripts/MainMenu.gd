@@ -3,6 +3,7 @@ extends Control
 @onready var username_label = $UserStats/UsernameLabel
 @onready var connect_button = $UserStats/ConnectButton
 @onready var vcoins_label = $UserStats/StatsLabel
+@onready var loginlogout_button = $LogInLogOutButton
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -33,6 +34,7 @@ func _update_ui() -> void:
 	if AuthManager.is_logged_in:
 		username_label.text = "Welcome, " + AuthManager.username
 		vcoins_label.text = "VCoins: " + str(AuthManager.vcoins)
+		loginlogout_button.text = "Log Out"
 		
 		if AuthManager.is_vtrolly_connected:
 			connect_button.text = "Vtrolly Linked ✅"
@@ -45,6 +47,7 @@ func _update_ui() -> void:
 		username_label.text = "Guest"
 		vcoins_label.text = ""
 		connect_button.visible = false
+		loginlogout_button.text = "Log In"
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -68,3 +71,10 @@ func _on_connect_button_pressed() -> void:
 		return
 	
 	get_tree().change_scene_to_file("res://Client/Scenes/ConnectToVTrolly.tscn")
+
+
+func _on_log_in_log_out_button_pressed() -> void:
+	if AuthManager.is_logged_in:
+		AuthManager.logout_user()
+	else:
+		get_tree().change_scene_to_file("res://Client/Scenes/LogInRegister.tscn")

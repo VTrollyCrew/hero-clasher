@@ -76,6 +76,32 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_nqurr")
 
+[node name="LogInLogOutButton" type="Button" parent="." unique_id=525933036]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 580.0
+offset_top = -455.0
+offset_right = 887.0
+offset_bottom = -402.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("3_6jes3")
+theme_override_font_sizes/font_size = 42
+theme_override_styles/normal = SubResource("StyleBoxFlat_17u0m")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_m7rth")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6jes3")
+theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_nqurr")
+text = "Log Out"
+
 [node name="Logo" type="Label" parent="." unique_id=1252148507]
 layout_mode = 1
 anchors_preset = 8
@@ -229,4 +255,5 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_oxnt4")
 theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_avlsd")
 text = "Connect To VTrolly Account"
 
+[connection signal="pressed" from="LogInLogOutButton" to="." method="_on_log_in_log_out_button_pressed"]
 [connection signal="pressed" from="UserStats/ConnectButton" to="." method="_on_connect_button_pressed"]

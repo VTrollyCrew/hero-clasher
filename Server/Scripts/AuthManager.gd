@@ -1,6 +1,7 @@
 extends Node
 
 const SAVE_PATH = "user://session.cfg"
+const SESSION_EXPIRY_SECONDS = 14 * 24 * 60 * 60 # 14 days
 
 signal user_data_updated
 
@@ -228,19 +229,48 @@ func save_session():
 	var config = ConfigFile.new()
 	config.set_value("auth", "token", auth_token)
 	config.set_value("auth", "user_id", user_id)
-	config.save(SAVE_PATH)
+	config.set_value("auth", "timestamp", Time.get_unix_time_from_system())
+	var err = config.save(SAVE_PATH)
+	if err == OK:
+		print("💾 Session saved locally.")
 	
 func load_session():
 	var config = ConfigFile.new()
 	var err = config.load(SAVE_PATH)
 	if err != OK: return # No session saved
 	
+	var saved_time = config.get_value("auth", "timestamp", 0.0)
+	var current_time = Time.get_unix_time_from_system()
+	
+	# Check if 14 days have passed
+	if current_time - saved_time > SESSION_EXPIRY_SECONDS:
+		print("⌛ Session expired after 14 days.")
+		logout_user()
+		return
+	
 	var saved_token = config.get_value("auth", "token", "")
 	var saved_id = config.get_value("auth", "user_id", "")
 	
 	if saved_token != "":
+		print("🔄 Found saved token, attempting auto-login...")
 		# Try to validate the token by fetching user data
 		auth_token = saved_token
 		user_id = saved_id
 		is_logged_in = true
 		refresh_user_data() # This will populate username and vcoins
+
+func logout_user():
+	auth_token = ""
+	user_id = ""
+	username = ""
+	vcoins = 0
+	is_logged_in = false
+	is_vtrolly_connected = false
+	
+	# Delete the "cookie" file
+	var dir = DirAccess.open("user://")
+	if dir.file_exists("session.cfg"):
+		dir.remove("session.cfg")
+	
+	print("🚪 Logged out and session cleared.")
+	get_tree().change_scene_to_file("res://Client/Scenes/LogInRegister.tscn")
