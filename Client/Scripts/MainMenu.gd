@@ -54,13 +54,6 @@ func _process(delta: float) -> void:
 	pass
 
 
-func _on_play_button_pressed() -> void:
-	# This will eventually trigger the matchmaking logic
-	print("Searching for a battle...")
-	# For now, let's just go to the old card scene to test
-	get_tree().change_scene_to_file("res://Client/Scenes/CardTable.tscn")
-
-
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()
 
@@ -78,3 +71,7 @@ func _on_log_in_log_out_button_pressed() -> void:
 		AuthManager.logout_user()
 	else:
 		get_tree().change_scene_to_file("res://Client/Scenes/LogInRegister.tscn")
+
+
+func _on_begin_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://Client/Scenes/Lobby.tscn")

@@ -63,3 +63,29 @@ func disable_buttons():
 	$HostButton.visible = false
 	$JoinButton.disabled = true
 	$JoinButton.visible = false
+
+func host_game():
+	peer.create_server(PORT)
+	multiplayer.multiplayer_peer = peer
+	print("Server Started...")
+	# Change scene to the actual Game Field or Waiting Room
+	#get_tree().change_scene_to_file("res://Client/Scenes/GameField.tscn")
+	
+func join_game(address):
+	peer.create_client(address, PORT)
+	multiplayer.multiplayer_peer = peer
+	print("Connecting to Host...")
+	#get_tree().change_scene_to_file("res://Client/Scenes/GameField.tscn")
+
+@rpc("authority", "call_local", "reliable")
+func start_game_rpc():
+	print("RPC Received: Starting Game...")
+	# Replace with your actual game scene path
+	#get_tree().change_scene_to_file("res://Client/Scenes/MainGameField.tscn")
+
+func start_game_for_all():
+	if multiplayer.is_server():
+		# This sends the command to all connected peers
+		start_game_rpc.rpc()
+	else:
+		print("Only the host can start the game!")

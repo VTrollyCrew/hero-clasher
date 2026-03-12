@@ -21,12 +21,15 @@ AuthManager="*uid://3e1se3n717n"
 UIAnimation="*uid://cawfyydj325or"
 UserAuth="*uid://dncc10crmhjys"
 PB="*uid://b6mfb7qmrh8r"
+RoomManager="*uid://bej88cnjysj4d"
+Multiplayer="*uid://dqqp273vrctet"
 
 [display]
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/subwindows/embed_subwindows=false
+window/per_pixel_transparency/allowed=true
 
 [editor]
 

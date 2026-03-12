@@ -4,6 +4,7 @@
 [ext_resource type="FontFile" uid="uid://bemesjr3qpkx8" path="res://Resources/Fonts/monogram-extended.ttf" id="2_7cxsl"]
 
 [node name="PopupControl" type="CanvasLayer" unique_id=374896770]
+layer = 100
 script = ExtResource("1_pggs2")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=633364082]

@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://ddl36gfo4q2on"]
+
+[ext_resource type="Script" uid="uid://b0r1uqjkt5ln4" path="res://Client/Scripts/PlayerEntry.gd" id="1_vk2fn"]
+
+[node name="PlayerEntry" type="HBoxContainer" unique_id=1535381733]
+script = ExtResource("1_vk2fn")
+
+[node name="NameLabel" type="Label" parent="." unique_id=666770400]
+layout_mode = 2
+text = "Player Name"
+
+[node name="RoleLabel" type="Label" parent="." unique_id=1046864708]
+layout_mode = 2
+text = "Player Role"
+
+[node name="ReadyLabel" type="Label" parent="." unique_id=419078870]
+layout_mode = 2
+text = "Ready"
+
+[node name="KickButton" type="Button" parent="." unique_id=45716402]
+layout_mode = 2
+text = "Kick Player"
+
+[connection signal="pressed" from="KickButton" to="." method="_on_kick_button_pressed"]

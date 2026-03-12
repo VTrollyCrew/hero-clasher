@@ -256,4 +256,5 @@ theme_override_styles/hover_pressed = SubResource("StyleBoxFlat_avlsd")
 text = "Connect To VTrolly Account"
 
 [connection signal="pressed" from="LogInLogOutButton" to="." method="_on_log_in_log_out_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/BeginButton" to="." method="_on_begin_button_pressed"]
 [connection signal="pressed" from="UserStats/ConnectButton" to="." method="_on_connect_button_pressed"]
