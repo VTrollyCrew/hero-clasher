@@ -1,0 +1,126 @@
+[gd_scene format=3 uid="uid://dj5cuel1b8wh4"]
+
+[ext_resource type="Script" uid="uid://clpf30gxpggca" path="res://Client/Scripts/Lobby.gd" id="1_y00do"]
+
+[node name="Lobby" type="Control" unique_id=1873878397]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_y00do")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1671587193]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -496.0
+offset_top = -357.0
+offset_right = 504.0
+offset_bottom = 278.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=600574720]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="RefreshButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=1178231978]
+layout_mode = 2
+text = "Refresh"
+
+[node name="CreateRoomButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=1058445469]
+layout_mode = 2
+text = "Create Room"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=906749702]
+custom_minimum_size = Vector2(1000, 600)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="RoomContainer" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=558363846]
+layout_mode = 2
+
+[node name="CreateRoomDialog" type="CanvasLayer" parent="." unique_id=2021221497]
+layer = 50
+visible = false
+
+[node name="PanelContainer" type="PanelContainer" parent="CreateRoomDialog" unique_id=1646315254]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = -143.5
+offset_right = 160.0
+offset_bottom = 143.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CreateRoomDialog/PanelContainer" unique_id=173272444]
+layout_mode = 2
+
+[node name="CreateNewRoom" type="Label" parent="CreateRoomDialog/PanelContainer/VBoxContainer" unique_id=1960831355]
+layout_mode = 2
+text = "Create New Room"
+
+[node name="RoomNameEditText" type="LineEdit" parent="CreateRoomDialog/PanelContainer/VBoxContainer" unique_id=1160633277]
+layout_mode = 2
+placeholder_text = "Room Name"
+
+[node name="MaxPlayersLabel" type="Label" parent="CreateRoomDialog/PanelContainer/VBoxContainer" unique_id=168857015]
+layout_mode = 2
+text = "Maximum Players"
+
+[node name="MaxPlayersSpin" type="SpinBox" parent="CreateRoomDialog/PanelContainer/VBoxContainer" unique_id=1164058660]
+layout_mode = 2
+min_value = 2.0
+max_value = 8.0
+value = 2.0
+
+[node name="AllowSpectatorsCheckBox" type="CheckBox" parent="CreateRoomDialog/PanelContainer/VBoxContainer" unique_id=830730683]
+layout_mode = 2
+text = "Allow Spectators"
+
+[node name="RoomVisibility" type="Label" parent="CreateRoomDialog/PanelContainer/VBoxContainer" unique_id=1760371486]
+layout_mode = 2
+text = "Visibility"
+
+[node name="VisibilityOption" type="OptionButton" parent="CreateRoomDialog/PanelContainer/VBoxContainer" unique_id=289436304]
+layout_mode = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Public"
+popup/item_0/id = 0
+popup/item_1/text = "Private"
+popup/item_1/id = 1
+
+[node name="PasswordEdit" type="LineEdit" parent="CreateRoomDialog/PanelContainer/VBoxContainer" unique_id=1052991965]
+layout_mode = 2
+placeholder_text = "Room Password"
+secret = true
+secret_character = "*"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CreateRoomDialog/PanelContainer/VBoxContainer" unique_id=1939945774]
+layout_mode = 2
+
+[node name="CancelButton" type="Button" parent="CreateRoomDialog/PanelContainer/VBoxContainer/HBoxContainer" unique_id=718296125]
+layout_mode = 2
+text = "Cancel"
+
+[node name="CreateButton" type="Button" parent="CreateRoomDialog/PanelContainer/VBoxContainer/HBoxContainer" unique_id=2098545831]
+layout_mode = 2
+text = "Create"
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/RefreshButton" to="." method="_on_refresh_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/CreateRoomButton" to="." method="_on_create_room_button_pressed"]
+[connection signal="pressed" from="CreateRoomDialog/PanelContainer/VBoxContainer/HBoxContainer/CancelButton" to="." method="_on_cancel_button_pressed"]
+[connection signal="pressed" from="CreateRoomDialog/PanelContainer/VBoxContainer/HBoxContainer/CreateButton" to="." method="_on_create_room_confirmed"]

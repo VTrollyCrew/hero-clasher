@@ -1,0 +1,14 @@
+# Card details are saved in the following order. This will be changed in the future
+# "Card Name": {attack, health, card type, ability text, ability script}
+
+const CARDS = {
+	"Knight": [2, 2, "Character", null, null],
+	"Demon": [3, 2, "Character", null, null],
+	"Archer": [3, 1, "Character", "When played to field, deal 1 direct damage", "res://Shared/Scripts/Abilities/ArrowShot.gd"],
+	"BlueSlime": [4, 1, "Character", null, null],
+	"RedSlime": [4, 1, "Character", null, null],
+	"GreenSlime": [3, 1, "Character", "This card can attack twice", "res://Shared/Scripts/Abilities/DoubleAttack.gd"],
+	"BottledTornado": [null, null, "Item", "Deal 1 damage to all opponent characters", "res://Shared/Scripts/Abilities/BottledTornado.gd"]
+}
+# This is where the card information are saved.
+# Note that this will be modified later

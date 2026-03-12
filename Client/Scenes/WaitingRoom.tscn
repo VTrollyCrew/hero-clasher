@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://bnskwklh2dmer"]
+
+[ext_resource type="Script" uid="uid://b2romkabmoxsf" path="res://Client/Scripts/WaitingRoom.gd" id="1_i71s1"]
+
+[node name="WaitingRoom" type="Control" unique_id=535992848]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_i71s1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1136795092]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -836.0
+offset_top = -459.5
+offset_right = 836.0
+offset_bottom = 459.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="RoomNameLabel" type="Label" parent="VBoxContainer" unique_id=1584682069]
+layout_mode = 2
+text = "Room: ..."
+horizontal_alignment = 1
+
+[node name="HostLabel" type="Label" parent="VBoxContainer" unique_id=883625705]
+layout_mode = 2
+text = "Host: ..."
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer" unique_id=280495057]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="PlayerList" type="VBoxContainer" parent="VBoxContainer/ScrollContainer" unique_id=701861092]
+layout_mode = 2
+
+[node name="ReadyToggleButton" type="Button" parent="VBoxContainer" unique_id=1185854240]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1727078985]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="StartButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=239272419]
+layout_mode = 2
+text = "Start Game"
+
+[node name="LeaveButton" type="Button" parent="VBoxContainer/HBoxContainer" unique_id=534594909]
+layout_mode = 2
+text = "Leave"
+
+[connection signal="pressed" from="VBoxContainer/ReadyToggleButton" to="." method="_on_ready_toggle_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/LeaveButton" to="." method="_on_leave_button_pressed"]

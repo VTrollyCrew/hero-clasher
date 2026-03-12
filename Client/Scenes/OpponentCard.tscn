@@ -1,0 +1,214 @@
+[gd_scene format=3 uid="uid://dp8dmqmiqj4gt"]
+
+[ext_resource type="Script" uid="uid://cfj4eqsm1i37w" path="res://Client/Scripts/OpponentCard.gd" id="1_mlcvy"]
+[ext_resource type="Texture2D" uid="uid://dvhb2jpuoxmxu" path="res://Resources/Cards/CardBack/CardBack.png" id="2_3vr6s"]
+[ext_resource type="Texture2D" uid="uid://choujsnkj3k1l" path="res://Resources/Cards/DemonCard.png" id="3_lotax"]
+
+[sub_resource type="Animation" id="Animation_eumee"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Attack:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Health:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CardBackImage:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.2106665, 0.21104757)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CardBackImage:z_index")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CardImage:z_index")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [-1]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CardImage:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0.21066666, 0.21066664)]
+}
+
+[sub_resource type="Animation" id="Animation_wf8id"]
+resource_name = "card_flip"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Attack:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1861783, 0.20000002),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Health:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1861783, 0.20000002),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CardBackImage:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.10000001, 0.20000002),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.2106665, 0.21104757), Vector2(0.01, 0.211), Vector2(0.21, 0.211)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CardBackImage:z_index")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.10000001),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, -1]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CardImage:z_index")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.10000001),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [-1, 0]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CardImage:scale")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0, 0.10000001, 0.20000002),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(0.21066666, 0.21066664), Vector2(0.01, 0.211), Vector2(0.21, 0.211)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_brehn"]
+_data = {
+&"RESET": SubResource("Animation_eumee"),
+&"card_flip": SubResource("Animation_wf8id")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qrb68"]
+size = Vector2(157.33334, 221.33334)
+
+[node name="Card" type="Node2D" unique_id=1752829942]
+position = Vector2(90, 105)
+scale = Vector2(0.75, 0.75)
+script = ExtResource("1_mlcvy")
+
+[node name="CardBackImage" type="Sprite2D" parent="." unique_id=382928070]
+position = Vector2(-1.5258789e-05, 0.20007144)
+scale = Vector2(0.2106665, 0.21104757)
+texture = ExtResource("2_3vr6s")
+
+[node name="CardImage" type="Sprite2D" parent="." unique_id=1778736533]
+z_index = -1
+scale = Vector2(0.21066666, 0.21066664)
+texture = ExtResource("3_lotax")
+
+[node name="Attack" type="RichTextLabel" parent="." unique_id=1867576426]
+modulate = Color(1, 1, 1, 0)
+offset_left = -71.66667
+offset_top = -103.99998
+offset_right = -31.666672
+offset_bottom = -63.999977
+scale = Vector2(1.5, 1.5)
+text = "000"
+
+[node name="Health" type="RichTextLabel" parent="." unique_id=1625907080]
+modulate = Color(1, 1, 1, 0)
+offset_left = 10.667007
+offset_top = -104.0
+offset_right = 50.667007
+offset_bottom = -64.0
+scale = Vector2(1.5, 1.5)
+text = "000"
+horizontal_alignment = 2
+
+[node name="Ability" type="RichTextLabel" parent="." unique_id=1081422047]
+offset_left = -72.0
+offset_top = 40.0
+offset_right = 70.66667
+offset_bottom = 102.66667
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1743730122]
+libraries/ = SubResource("AnimationLibrary_brehn")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=938583781]
+collision_layer = 8
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=147744637]
+shape = SubResource("RectangleShape2D_qrb68")

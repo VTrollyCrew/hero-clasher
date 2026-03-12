@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://dix0wcpkecm2a"]
+
+[ext_resource type="Script" uid="uid://brq1gkhcjkkcd" path="res://Client/Scripts/RoomEntry.gd" id="1_fk13o"]
+
+[node name="RoomEntry" type="HBoxContainer" unique_id=696513122]
+script = ExtResource("1_fk13o")
+
+[node name="NameLabel" type="Label" parent="." unique_id=1915006314]
+layout_mode = 2
+text = "Room Name"
+
+[node name="PlayersLabel" type="Label" parent="." unique_id=980231784]
+layout_mode = 2
+text = "2/3"
+
+[node name="JoinButton" type="Button" parent="." unique_id=1893952514]
+layout_mode = 2
+text = "Join"
+
+[connection signal="pressed" from="JoinButton" to="." method="_on_join_button_pressed"]
