@@ -13,7 +13,7 @@ func setup(room):
 	room_data = room
 	name_label.text = room["room_name"]
 	var players = room.get("all_players", []).size()
-	var max_players = room.get("max_players", 2)
+	var max_players = int(room.get("max_players", 2))
 	players_label.text = str(players) + "/" + str(max_players)
 	if room["visibility"] == "private":
 		join_button.text = "Join (Private)"

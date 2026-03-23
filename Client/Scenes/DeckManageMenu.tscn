@@ -1,0 +1,64 @@
+[gd_scene format=3 uid="uid://crh3j8gcsr32p"]
+
+[ext_resource type="PackedScene" uid="uid://cuoyr8386clgg" path="res://Client/Scenes/UI/DeckOptionsPopup.tscn" id="1_5xrnb"]
+[ext_resource type="Script" uid="uid://1pd1rgofna2y" path="res://Client/Scripts/DeckManagerMenu.gd" id="1_hagtm"]
+
+[node name="DeckManageMenu" type="Control" unique_id=998731673]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_hagtm")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=208651152]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=679386476]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1484728206]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1787009240]
+custom_minimum_size = Vector2(60, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+text = "Back"
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1978119320]
+layout_mode = 2
+size_flags_horizontal = 6
+text = "My Decks"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=102358498]
+custom_minimum_size = Vector2(0, 700)
+layout_mode = 2
+vertical_scroll_mode = 0
+
+[node name="DeckContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=2125194681]
+custom_minimum_size = Vector2(0, 700)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="DeckOptionsPopup" parent="." unique_id=845264230 instance=ExtResource("1_5xrnb")]
+visible = false
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/Button" to="." method="_on_back_button_pressed"]

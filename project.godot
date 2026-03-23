@@ -23,6 +23,8 @@ UserAuth="*uid://dncc10crmhjys"
 PB="*uid://b6mfb7qmrh8r"
 RoomManager="*uid://bej88cnjysj4d"
 Multiplayer="*uid://dqqp273vrctet"
+DeckManager="*uid://jboftb0taqg6"
+CardDatabase="*uid://bra7yb7sbxr6c"
 
 [display]
 

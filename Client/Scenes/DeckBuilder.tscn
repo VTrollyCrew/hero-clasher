@@ -1,0 +1,132 @@
+[gd_scene format=3 uid="uid://bc0cx12prsa6i"]
+
+[ext_resource type="Script" uid="uid://bkwxig7jsegmt" path="res://Client/Scripts/DeckBuilder.gd" id="1_w5sno"]
+
+[node name="DeckBuilder" type="Control" unique_id=1998506132]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_w5sno")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=427001676]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopBar" type="HBoxContainer" parent="VBoxContainer" unique_id=1302001410]
+custom_minimum_size = Vector2(0, 75)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/separation = 20
+
+[node name="Back" type="Button" parent="VBoxContainer/TopBar" unique_id=1672675329]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+text = "Back
+"
+
+[node name="Title" type="Label" parent="VBoxContainer/TopBar" unique_id=1777382161]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "My Deck"
+
+[node name="Save" type="Button" parent="VBoxContainer/TopBar" unique_id=1512144597]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+text = "Save
+"
+
+[node name="MainArea" type="HBoxContainer" parent="VBoxContainer" unique_id=2063263318]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="LeftPanel" type="VBoxContainer" parent="VBoxContainer/MainArea" unique_id=1717985957]
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 2
+
+[node name="AllCards" type="Label" parent="VBoxContainer/MainArea/LeftPanel" unique_id=716315421]
+layout_mode = 2
+text = "Card Pool"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MainArea/LeftPanel" unique_id=1105312941]
+custom_minimum_size = Vector2(1000, 600)
+layout_mode = 2
+
+[node name="AllCardsGrid" type="GridContainer" parent="VBoxContainer/MainArea/LeftPanel/ScrollContainer" unique_id=308344619]
+custom_minimum_size = Vector2(1000, 600)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 4
+
+[node name="RightPanel" type="VBoxContainer" parent="VBoxContainer/MainArea" unique_id=609714186]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DeckCards" type="Label" parent="VBoxContainer/MainArea/RightPanel" unique_id=2046503885]
+layout_mode = 2
+text = "Deck"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/MainArea/RightPanel" unique_id=1558084216]
+custom_minimum_size = Vector2(0, 600)
+layout_mode = 2
+
+[node name="DeckCardsGrid" type="GridContainer" parent="VBoxContainer/MainArea/RightPanel/ScrollContainer" unique_id=1662210501]
+custom_minimum_size = Vector2(0, 600)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 4
+
+[node name="CardDetailsPopup" type="PopupPanel" parent="." unique_id=1237385051]
+oversampling_override = 1.0
+initial_position = 1
+size = Vector2i(900, 500)
+visible = true
+min_size = Vector2i(900, 500)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CardDetailsPopup" unique_id=160480199]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 896.0
+offset_bottom = 496.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CardDetailsPopup/VBoxContainer" unique_id=33584067]
+layout_mode = 2
+
+[node name="CardArt" type="TextureRect" parent="CardDetailsPopup/VBoxContainer/HBoxContainer" unique_id=113236667]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CardDetailsPopup/VBoxContainer/HBoxContainer" unique_id=1038070736]
+layout_mode = 2
+
+[node name="CardName" type="Label" parent="CardDetailsPopup/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=446047315]
+layout_mode = 2
+
+[node name="CardType" type="Label" parent="CardDetailsPopup/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1528286557]
+layout_mode = 2
+
+[node name="CardAttack" type="Label" parent="CardDetailsPopup/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1359560531]
+layout_mode = 2
+
+[node name="CardHealth" type="Label" parent="CardDetailsPopup/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=1871301904]
+layout_mode = 2
+
+[node name="CardAbilityText" type="Label" parent="CardDetailsPopup/VBoxContainer/HBoxContainer/VBoxContainer" unique_id=990759711]
+layout_mode = 2
+
+[node name="CloseButton" type="Button" parent="CardDetailsPopup/VBoxContainer/HBoxContainer" unique_id=1375248657]
+layout_mode = 2

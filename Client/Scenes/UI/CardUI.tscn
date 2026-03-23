@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://2amr0ho8f8av"]
+
+[ext_resource type="Script" uid="uid://in522hxomh6s" path="res://Client/Scripts/CardUI.gd" id="1_668lc"]
+
+[node name="CardUi" type="Button" unique_id=479279290]
+custom_minimum_size = Vector2(120, 160)
+script = ExtResource("1_668lc")
+
+[node name="CardImage" type="TextureRect" parent="." unique_id=1424571673]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Attack" type="RichTextLabel" parent="." unique_id=1028650401]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 44.0
+offset_bottom = 44.0
+
+[node name="Health" type="RichTextLabel" parent="." unique_id=1639064075]
+layout_mode = 0
+offset_left = 77.0
+offset_top = 4.0
+offset_right = 117.0
+offset_bottom = 44.0
+
+[node name="Ability" type="RichTextLabel" parent="." unique_id=1680469348]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 113.0
+offset_right = 114.0
+offset_bottom = 153.0

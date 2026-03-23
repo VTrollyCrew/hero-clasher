@@ -75,3 +75,7 @@ func _on_log_in_log_out_button_pressed() -> void:
 
 func _on_begin_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://Client/Scenes/Lobby.tscn")
+
+
+func _on_decks_button_pressed() -> void:
+	get_tree().change_scene_to_file("res://Client/Scenes/DeckManageMenu.tscn")
