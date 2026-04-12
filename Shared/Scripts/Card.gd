@@ -1,3 +1,6 @@
+# This is the player card script
+# This is placed in the shared directory because it is planned to be used in the deck construction menu as well as in the game
+
 extends Node2D
 
 signal hovered

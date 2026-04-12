@@ -1,3 +1,17 @@
+# This is the authentication manager script
+# There are multiple tasks handled in this section
+
+# 1. This manages the user session cookies which are saved in the game user://sessions.cfg file
+# 2. This manages the pocketbase database connection and the VTrolly user database connection
+# 3. Pocketbase acts as the hot database for the active data in the game and the VTrolly MongoDB database acts as a cold database to store archived data and the user data for reference
+# 4. All logins, registrations and syncs are managed in this server script
+# 5. All session management including data loading, deletion and read functions are done through here
+# 6. All data validations such as user connections, email, password valications are done through here
+
+# Codebase is referencing on multiple sources
+# Source 1: https://docs.godotengine.org/en/stable/tutorials/networking/http_request_class.html (For http requests, server data transfering, and cookie data management). This is the official documentation
+# Source 2: Deepseek AI (For reference code)
+
 extends Node
 
 const SAVE_PATH = "user://session.cfg"
@@ -46,11 +60,8 @@ func _on_login_completed(result, response_code, headers, body):
 	if json == null:
 		show_message("Error", "Server is unreachable.")
 		return
-		
-	print("Raw Body: ", response_text)
 	
 	if response_code == 200:
-		# --- UPDATE THESE LINES ---
 		auth_token = json.get("token", "")
 		var record = json.get("record", {})
 		user_id = record.get("id", "")
@@ -58,8 +69,7 @@ func _on_login_completed(result, response_code, headers, body):
 		is_logged_in = true
 		is_vtrolly_connected = record.get("is_vtrolly_connected", false)
 		vcoins = int(record.get("vcoins", 0))
-			
-		print("✅ Success! Welcome ", username)
+
 		save_session()
 		get_tree().change_scene_to_file("res://Client/Scenes/MainMenu.tscn")
 	else:
@@ -67,8 +77,6 @@ func _on_login_completed(result, response_code, headers, body):
 		show_message("Log in error", msg)
 
 func register_user(email, password):
-	print("AuthManager: Attempting to register ", email)
-	
 	var body = JSON.stringify({
 		"email": email,
 		"emailVisibility": true,
@@ -110,9 +118,6 @@ func sync_with_mongodb(pb_id):
 	var headers = ["Content-Type: application/json"]
 	
 	node_http.request("http://localhost:3000/sync-player", headers, HTTPClient.METHOD_POST, body)
-	node_http.request_completed.connect(func(result, response_code, headers, body):
-		print("MongoDB Sync Response: ", body.get_string_from_utf8())
-	)
 
 func show_message(MainText: String, MessageText: String):
 	var popup = popup_scene.instantiate()
@@ -134,12 +139,6 @@ func is_strong_password(password: String) -> String:
 	return "" # Empty string means it passed
 
 func connect_vtrolly_account(vtrolly_email, vtrolly_password):
-	# Log what we are sending
-	print("--- Sending to Node.js ---")
-	print("Email: ", vtrolly_email)
-	print("Password Length: ", vtrolly_password.length())
-	print("Current PB ID: ", user_id)
-	
 	var node_http = HTTPRequest.new()
 	add_child(node_http)
 	
@@ -157,20 +156,15 @@ func connect_vtrolly_account(vtrolly_email, vtrolly_password):
 	# Connect using a lambda function
 	node_http.request_completed.connect(func(result, response_code, headers, body_raw):
 		var response_text = body_raw.get_string_from_utf8()
-		print("--- Node.js Response Received ---")
-		print("Code: ", response_code)
-		print("Body: ", response_text) # THIS IS THE KEY LOG
 		
 		var json = JSON.parse_string(response_text)
 		
 		if json == null:
-			print("❌ Critical Error: Server returned non-JSON response: ", response_text)
 			show_message("Connection Error", "Server error. Please check backend logs.")
 			node_http.queue_free()
 			return
 		
 		if response_code == 200:
-			print("✅ Linked to MongoDB!")
 			# Update the local boolean immediately so the UI reflects it
 			is_vtrolly_connected = true 
 			
@@ -231,8 +225,6 @@ func save_session():
 	config.set_value("auth", "user_id", user_id)
 	config.set_value("auth", "timestamp", Time.get_unix_time_from_system())
 	var err = config.save(SAVE_PATH)
-	if err == OK:
-		print("💾 Session saved locally.")
 	
 func load_session():
 	var config = ConfigFile.new()
@@ -244,7 +236,6 @@ func load_session():
 	
 	# Check if 14 days have passed
 	if current_time - saved_time > SESSION_EXPIRY_SECONDS:
-		print("⌛ Session expired after 14 days.")
 		logout_user()
 		return
 	
@@ -252,7 +243,6 @@ func load_session():
 	var saved_id = config.get_value("auth", "user_id", "")
 	
 	if saved_token != "":
-		print("🔄 Found saved token, attempting auto-login...")
 		# Try to validate the token by fetching user data
 		auth_token = saved_token
 		user_id = saved_id
@@ -272,5 +262,4 @@ func logout_user():
 	if dir.file_exists("session.cfg"):
 		dir.remove("session.cfg")
 	
-	print("🚪 Logged out and session cleared.")
 	get_tree().change_scene_to_file("res://Client/Scenes/LogInRegister.tscn")

@@ -1,3 +1,8 @@
+# This is the RoomEntry script 
+# This allows to structure the room entry box for the instantiate purposes
+# It also calls the password dialog box to allow players to join private password locked rooms
+# The script is attached to the RoomEntry.tscn scene
+
 extends HBoxContainer
 
 var room_data: Dictionary
@@ -12,8 +17,8 @@ func setup(room):
 	print("join_button: ", join_button)
 	room_data = room
 	name_label.text = room["room_name"]
-	var players = room.get("all_players", []).size()
-	var max_players = room.get("max_players", 2)
+	var players = int(room.get("all_players", []).size())
+	var max_players = int(room.get("max_players", 2))
 	players_label.text = str(players) + "/" + str(max_players)
 	if room["visibility"] == "private":
 		join_button.text = "Join (Private)"

@@ -1,3 +1,12 @@
+# This is the room manager server script
+# The main focus in this script is to manage the rooms related functions
+# This includes fetching room data, joining and leaving existing rooms, room creation, waiting room management and more
+# Room archiving is planned to place here but suspended due to an error on room ending, on process of fixing issue
+
+# Codebase is referencing on multiple sources
+# Source 1: https://docs.godotengine.org/en/stable/tutorials/networking/http_request_class.html (For http requests, server data transfering, and cookie data management). This is the official documentation
+# Source 2: Deepseek AI (For reference code)
+
 extends Node
 
 signal rooms_updated(rooms)          # Emitted when public room list changes
@@ -28,17 +37,8 @@ func _ready():
 	add_child(http_request)
 	# Connect signals if needed
 
-# ---------- Room Creation ----------
-func create_room(room_name: String, max_players: int, allow_spectators: bool, visibility: String, password: String = "") -> void:
-	print("=== create_room called ===")
-	print("room_name: ", room_name)
-	print("max_players: ", max_players)
-	print("allow_spectators: ", allow_spectators)
-	print("visibility: ", visibility)
-	print("password: ", password)
-	print("AuthManager.user_id: ", AuthManager.user_id)
-	print("AuthManager.auth_token: ", AuthManager.auth_token)
-	
+# Creatng rooms for players o to join
+func create_room(room_name: String, max_players: int, allow_spectators: bool, visibility: String, password: String = "") -> void:	
 	# Create a new room. The host is the current user.
 	var body = {
 		"room_name": room_name,
@@ -60,9 +60,6 @@ func create_room(room_name: String, max_players: int, allow_spectators: bool, vi
 		"Authorization: " + AuthManager.auth_token
 	]
 	var url = _room_url()
-	print("POST URL: ", url)
-	print("Request body: ", JSON.stringify(body))
-	print("Headers: ", headers)
 	
 	# Ensure any previous connection is cleared
 	if http_request.request_completed.is_connected(_on_room_created):
@@ -70,9 +67,8 @@ func create_room(room_name: String, max_players: int, allow_spectators: bool, vi
 	http_request.request_completed.connect(_on_room_created, CONNECT_ONE_SHOT)
 	
 	var err = http_request.request(url, headers, HTTPClient.METHOD_POST, JSON.stringify(body))
-	if err != OK:
-		print("HTTPRequest error: ", err)
 
+# Aftermath of room creation
 func _on_room_created(result, response_code, headers, body):
 	var json = JSON.parse_string(body.get_string_from_utf8())
 	if response_code == 200:
@@ -87,35 +83,29 @@ func _on_room_created(result, response_code, headers, body):
 		var msg = json.get("message", "Unknown error") if json else "Unknown error"
 		show_message("Create Failed", msg)
 
-# ---------- Fetch Public Rooms ----------
+# Fetch rooms
 func fetch_public_rooms() -> void:
-	"""
-	Fetch all rooms with visibility = 'public' and state = 'open'.
-	"""
-	print("Fetching public rooms with token: ", AuthManager.auth_token)  # Debug
-	var filter = "visibility='public' && state='open'"
+	var filter = "state='open'"
 	var encoded_filter = filter.uri_encode()
 	var url = BASE_URL + "/api/collections/" + ROOMS_COLLECTION + "/records?filter=" + encoded_filter
-	print("URL: ", url)
 	var headers = ["Authorization: " + AuthManager.auth_token]
 	
 	http_request.request_completed.connect(_on_rooms_fetched, CONNECT_ONE_SHOT)
 	http_request.request(url, headers, HTTPClient.METHOD_GET)
 
+# Aftermath of room fetch
 func _on_rooms_fetched(result, response_code, headers, body):
 	var response_text = body.get_string_from_utf8()
-	print("Fetch rooms response code: ", response_code)
-	print("Response body: ", response_text)
 	if response_code == 200:
 		var json = JSON.parse_string(response_text)
 		if json and json.has("items"):
 			emit_signal("rooms_updated", json["items"])
 		else:
-			print("Invalid response format")
+			pass
 	else:
-		print("Failed to fetch rooms: ", response_text)
+		show_message("Room Refreshing Failed", response_text)
 
-# ---------- Join Room ----------
+# Joining room
 func join_room(room_id: String, password: String = "") -> void:
 	# Attempt to join a room. If private, password must match.
 
@@ -128,21 +118,18 @@ func join_room(room_id: String, password: String = "") -> void:
 
 func _on_room_fetched_for_join(result, response_code, headers, body, password: String):
 	if response_code != 200:
-		print("Room not found")
 		show_message("Join Failed", "Room not found")
 		return
 	
 	var room = JSON.parse_string(body.get_string_from_utf8())
 	# Check password if private
 	if room["visibility"] == "private" and room["password"] != password:
-		print("Incorrect password")
 		show_message("Join Failed", "Incorrect Password")
 		return
 	
 	# Check if room is full (all_players length >= max_players, but note we have separate player slots)
 	var current_players = room["all_players"] if room["all_players"] else []
 	if current_players.size() >= room["max_players"]:
-		print("Room is full")
 		show_message("Join Failed", "Room is Full")
 		return
 	
@@ -160,8 +147,6 @@ func _on_room_fetched_for_join(result, response_code, headers, body, password: S
 		update_data["player_2_id"] = AuthManager.user_id
 		update_data["player_2_ready"] = false
 	else:
-		# No free player slot, but room still has capacity? Possibly they become spectator.
-		# For now, just add to all_players and they will be spectator.
 		pass
 	
 	# Perform PATCH to update room
@@ -173,6 +158,7 @@ func _on_room_fetched_for_join(result, response_code, headers, body, password: S
 	http_request.request_completed.connect(_on_room_joined, CONNECT_ONE_SHOT)
 	http_request.request(patch_url, patch_headers, HTTPClient.METHOD_PATCH, JSON.stringify(update_data))
 
+# Transfer palyers to the joined room
 func _on_room_joined(result, response_code, headers, body):
 	if response_code == 200:
 		var room = JSON.parse_string(body.get_string_from_utf8())
@@ -182,14 +168,10 @@ func _on_room_joined(result, response_code, headers, body):
 		emit_signal("room_updated", current_room_data)
 		get_tree().change_scene_to_file("res://Client/Scenes/WaitingRoom.tscn")
 	else:
-		print("Failed to join room")
 		show_message("Join Failed", "Could not join to room")
 
-# ---------- Leave Room ----------
+# Leaving joined room
 func leave_room() -> void:
-	"""
-	Remove current user from the room. If host leaves, either delete room or assign new host.
-	"""
 	if current_room_id == "":
 		return
 		
@@ -205,6 +187,7 @@ func leave_room() -> void:
 	http_request.request_completed.connect(_on_room_fetched_for_leave, CONNECT_ONE_SHOT)
 	http_request.request(url, headers, HTTPClient.METHOD_GET)
 
+# Aftermath of room leaving
 func _on_room_fetched_for_leave(result, response_code, headers, body):
 	if response_code != 200:
 		exit_room()
@@ -240,15 +223,14 @@ func _on_room_fetched_for_leave(result, response_code, headers, body):
 func _on_room_left(result, response_code, headers, body):
 	# Unsubscribe from realtime
 	if response_code == 200:
-		print("Successfully left room")
 		show_message("Left Room", "You have left the room.")
 	else:
-		print("Failed to leave room, but exiting anyway")
 		show_message("Error", "Failed to leave room properly.")
 		
 	await get_tree().create_timer(1.5).timeout
 	exit_room()
 
+# Room deletion. This is a internal action
 func delete_room(room_id: String):
 	var url = BASE_URL + "/api/collections/" + ROOMS_COLLECTION + "/records/" + room_id
 	var headers = ["Authorization: " + AuthManager.auth_token]
@@ -257,37 +239,19 @@ func delete_room(room_id: String):
 
 func _on_room_deleted(result, response_code, headers, body):
 	if response_code == 204:
-		print("Room deleted")
 		show_message("Room Closed", "The host has left. The room is now closed.")
 	else:
-		print("Failed to delete room, but exiting anyway")
 		show_message("Error", "Could not delete room.")
 		
 	await get_tree().create_timer(1.5).timeout
 	exit_room()
 
-# ---------- Realtime Subscriptions ----------
+# Websocket handling for room subscription to check what rooms area available or not
 func subscribe_to_room(room_id: String):
-	"""
-	Open a WebSocket connection to PocketBase to listen for changes on this room.
-	PocketBase realtime endpoint: ws://127.0.0.1:8090/api/realtime
-	We subscribe to the specific record.
-	"""
-	# You need to implement WebSocket handling. PocketBase expects a client ID and subscription messages.
-	# For simplicity, you might use HTTP polling, but realtime is better.
-	# I'll outline the approach:
-	# 1. Create WebSocketPeer and connect to ws://127.0.0.1:8090/api/realtime
-	# 2. Send a message like: {"clientId": "some-unique-id"} (or omit)
-	# 3. Then send subscription: {"action": "subscribe", "subscriptions": ["rooms/"+room_id]}
-	# 4. Handle incoming messages and emit room_updated.
-	#
-	# Here's a basic implementation using HTTP polling as fallback if WebSocket is complex.
-	# Poll every 2 seconds for changes.
 	if realtime_subscription:
 		# Already subscribed, maybe close previous
 		pass
 	
-	# For simplicity, we'll set up a timer to poll the room data periodically.
 	var timer = Timer.new()
 	timer.name = "RoomPollTimer"
 	timer.wait_time = 2.0
@@ -314,17 +278,15 @@ func _on_room_polled(result, response_code, headers, body):
 			current_room_id = ""
 			get_tree().change_scene_to_file("res://Client/Scenes/Lobby.tscn")
 
-# ---------- Host Actions ----------
+# For wating room actions
 func kick_player(player_id: String):
 	"""
 	Host kicks a player from the room.
 	"""
 	if current_room_data["host_id"] != AuthManager.user_id:
-		print("Only host can kick")
 		show_message("Kick Failed", "Only host can kick players out from room")
 		return
 	if player_id == AuthManager.user_id:
-		print("Host cannot kick themselves")
 		show_message("Kick Failed", "Host cannot kick themselves out from room")
 		return
 	
@@ -352,16 +314,14 @@ func kick_player(player_id: String):
 
 func _on_kick_completed(result, response_code, headers, body):
 	if response_code == 200:
-		print("Player kicked")
+		show_message("Success", "Player Kicked Successfully")
 	else:
-		print("Failed to kick")
+		show_message("Failed", "Palyer Kick Was Not Successful")
 
+# Assigning slots to the player entities in the room
 func assign_slot(player_id: String, slot: String):
-	"""
-	slot: "player_1_id" or "player_2_id" or "spectator"
-	"""
 	if current_room_data["host_id"] != AuthManager.user_id:
-		print("Only host can assign slots")
+		show_message("Action Failed", "Only host can assign slots")
 		return
 	
 	var update_data = {}
@@ -403,21 +363,14 @@ func assign_slot(player_id: String, slot: String):
 
 func _on_assign_completed(result, response_code, headers, body):
 	if response_code == 200:
-		print("Slot assigned")
+		show_message("Action Successful", "Slot Assigned Successfully")
 	else:
-		print("Failed to assign slot")
+		show_message("Action Failed", "Failed to Assign Slot")
 
-# ---------- Start Game ----------
+# Game starting, only the host can start. This will be finetuned later
 func start_game():
-	"""
-	Host starts the game. This will:
-	- Set room state to 'closed' (optional)
-	- Notify all players via realtime (so they can prepare)
-	- Actually, after starting, we need to establish ENet connection.
-	We'll use the existing Multiplayer.gd to host/join.
-	"""
 	if current_room_data["host_id"] != AuthManager.user_id:
-		print("Only host can start game")
+		show_message("Action Failed", "Only host can start game")
 		return
 		
 	var p1_id = current_room_data.get("player_1_id")
@@ -445,11 +398,7 @@ func start_game():
 
 func _on_room_closed_for_game(result, response_code, headers, body):
 	if response_code == 200:
-		# Now the host should start the ENet server
-		# We'll use the existing Multiplayer autoload or instance
-		# Assuming Multiplayer.gd is an autoload named "Multiplayer"
-		Multiplayer.host_game()  # This should create server and maybe load game scene
-		# Also notify clients to join the host via ENet
+		Multiplayer.host_game()  
 		emit_signal("game_started")
 	else:
 		print("Failed to close room")

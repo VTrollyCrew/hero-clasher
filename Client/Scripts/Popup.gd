@@ -1,3 +1,6 @@
+# This is the popup box modal
+# This is a reusable popup container for status, error messages to be displayed in the game
+
 extends CanvasLayer
 
 @onready var message_label = $PanelContainer/VBoxContainer/MessageLabel

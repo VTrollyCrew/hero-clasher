@@ -1,3 +1,10 @@
+# This is the the location where the VTrolly account details are connected from the client side
+# This connects the tables from the VTrolly MongoDB with the Pocketbase database
+# The data is transferred to the AuthManager script in the server side setup
+# This script is connected to the ConnectToVTrolly.tscn scene
+
+# This is a common pattern to transfer information
+
 extends Control
 
 @onready var email_input = $NinePatchRect/VBoxContainer/UsernameLineEdit

@@ -1,3 +1,13 @@
+# This is the player entry script
+# This is used to recognize the player who has entered into the waiting room
+# Host player can kick the player who is in the room if needed. The other players are not allowed to that
+# This allows to switch the players' (including host) ready status if needed. This is important to the room management
+# This script is attached to the PlayerEntry.tscn scene
+
+# Codebase is referencing on multiple sources
+# Source 1: https://docs.godotengine.org (For scene GUI container, scene tree management, button management, etc). This is the official documentation
+# Source 2: Deepseek AI (For reference code)
+
 extends HBoxContainer
 
 signal kick_requested
@@ -15,7 +25,7 @@ func setup(player_data, role: String, show_kick: bool, ready: bool):
 	else:
 		name_label.text = player_data
 	role_label.text = role
-	ready_label.text = "✔" if ready else "◯"
+	ready_label.text = "Player Ready" if ready else "Player Not Ready"
 	kick_button.visible = show_kick
 
 func set_empty(role: String):

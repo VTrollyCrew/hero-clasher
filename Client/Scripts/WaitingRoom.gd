@@ -1,8 +1,18 @@
+# This is the waiting room script
+# All waiting room functions from client side are handled here
+# Any players who joined in to the room are displayed here
+# All data are then passed to the RoomManager server side script
+# This is directly attached to the WaitingRoom.tscn scene
+
+# Codebase is referencing on multiple sources
+# Source 1: https://docs.godotengine.org (For scene GUI container, scene tree management, button management, etc). This is the official documentation
+# Source 2: Deepseek AI (For reference code)
+
 extends Control
 
 @onready var room_name_label = $VBoxContainer/RoomNameLabel
 @onready var host_label = $VBoxContainer/HostLabel
-@onready var player_list =  $VBoxContainer/ScrollContainer/PlayerList # e.g., VBoxContainer
+@onready var player_list =  $VBoxContainer/ScrollContainer/PlayerList 
 @onready var ready_button = $VBoxContainer/ReadyToggleButton
 @onready var start_button = $VBoxContainer/HBoxContainer/StartButton
 @onready var leave_button = $VBoxContainer/HBoxContainer/LeaveButton
@@ -10,13 +20,6 @@ extends Control
 var is_host: bool = false
 
 func _ready():
-	print("WaitingRoom _ready: Checking nodes")
-	print("  room_name_label: ", room_name_label)
-	print("  host_label: ", host_label)
-	print("  player_list: ", player_list)
-	print("  start_button: ", start_button)
-	print("  leave_button: ", leave_button)
-	
 	RoomManager.room_updated.connect(_on_room_updated)
 	RoomManager.game_started.connect(_on_game_started)
 	
@@ -44,9 +47,6 @@ func _update_ui(room_data):
 	
 	room_name_label.text = room_data["room_name"]
 	
-	# Find host name (you might need to fetch user details; AuthManager might have a cache)
-	# For simplicity, we'll just show host ID. Better to fetch usernames.
-	# Get host username from expand
 	var host_name = room_data["host_id"]  # fallback to ID
 	if room_data.has("expand") and room_data["expand"].has("host_id"):
 		var host_record = room_data["expand"]["host_id"]
@@ -156,13 +156,9 @@ func _on_kick_requested(entry):
 	RoomManager.kick_player(player_id)
 
 func _on_game_started():
-	# If we are the host, we already started the server in RoomManager.start_game.
-	# For clients, they need to join the host via ENet.
+	# Currently this is operating in localhost due to the available resources
 	if not is_host:
-		# Join the host's game using the host's IP (maybe stored in room_data? You can add a field)
-		# For simplicity, assume the host is at the same address (localhost for testing)
-		# In reality, you'd need to exchange IP addresses or use a relay.
-		Multiplayer.join_game("localhost")  # Or use the host's public IP
+		Multiplayer.join_game("localhost") 
 
 
 func _on_start_button_pressed() -> void:

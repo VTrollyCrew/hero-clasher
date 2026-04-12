@@ -1,3 +1,10 @@
+# This is the battle logic is designed
+# All battle logic including life points, attacks, clashes, card interactions and button interactions are handled
+# This is directly connected to the multiplayer RPC function. This connects the peers to interact with the players
+
+# The basic game logic is heavily inspired by Barry's Dev Hell
+# Playlist link: "https://www.youtube.com/playlist?list=PLNWIwxsLZ-LMYzxHlVb7v5Xo5KaUV7Tq1"
+
 extends Node
 
 var battle_timer
@@ -13,7 +20,7 @@ const CARD_MOVE_SPEED = 0.2
 const BATTLE_POSITION_OFFSET = 25
 
 # For health management
-const STARTING_HEALTH = 10			# This will be removed later since this is a character battle system
+const STARTING_HEALTH = 10
 var player_health
 var opponent_health
 
@@ -23,29 +30,10 @@ func _ready() -> void:
 	battle_timer.one_shot = true
 	battle_timer.wait_time = 1.0
 	
-	# The below units will be handled elsewhere
-	#player_health = STARTING_HEALTH
-	#$"../PlayerHealth".text = str(player_health)
-	#opponent_health = STARTING_HEALTH
-	#$"../OpponentHealth".text = str(opponent_health)
-	
-	# To store the character card slots
-	# This will be changed later
-	# These will be removed in the multiplayer
-	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot1")
-	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot2")
-	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot3")
-	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot4")
-	#empty_character_card_slots.append($"../CardSlots/OpponentCardSlot5")
-	
-#func direct_damage_to_opponent(damage):
-	#opponent_health = max(0, opponent_health - damage)
-	#$"../OpponentHealth".text = str(opponent_health)
 @rpc("any_peer", "call_local")
 func sync_direct_damage(damage, target_is_opponent: bool):
 	# target_is_opponent: true if the player who CALLED the RPC is hitting their enemy
 	# In multiplayer, 'opponent_health' for the sender is 'player_health' for the receiver.
-	
 	if multiplayer.get_unique_id() == multiplayer.get_remote_sender_id() or multiplayer.get_remote_sender_id() == 0:
 		# Logic for the person who played the card
 		opponent_health = max(0, opponent_health - damage)

@@ -1,3 +1,10 @@
+# This is the opponent players' hand
+# This holds the cards of the opponents' hand and their animation. However its interaction logic is removed due to game rule
+# This script is attached to the OpponentHand node2D located in the OpponentField.tscn scene
+
+# This coding is inspired by YouTuber "Barry's Dev Hell"
+# Link: "https://www.youtube.com/watch?v=lATAS8YpzFE&list=PLNWIwxsLZ-LMYzxHlVb7v5Xo5KaUV7Tq1&index=4&pp=iAQB"
+
 extends Node2D
 
 # const HAND_COUNT = 10

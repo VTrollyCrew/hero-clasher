@@ -1,3 +1,10 @@
+# This is the Card manager server script
+# This handles the logics involved in the card related function
+# These functions include card instantiation to the game, card interactions (Drag, Drop, Selection, etc.) card slot interactions to designate card playing areas and more
+
+# The basic game logic is heavily inspired by Barry's Dev Hell
+# Playlist link: "https://www.youtube.com/playlist?list=PLNWIwxsLZ-LMYzxHlVb7v5Xo5KaUV7Tq1"
+
 # Card Manager must be modified to match the targetted deck format
 # Refer to written documentation
 extends Node2D

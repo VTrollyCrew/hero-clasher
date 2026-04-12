@@ -1,4 +1,5 @@
 # This is where the multiplayer game setup will be built
+# Player data the game are managed in this section
 
 # For the time being, 
 extends Node2D

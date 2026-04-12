@@ -1,3 +1,11 @@
+# This is the multiplayer script
+# This is a unique script logic designed to Godot multiplayer functionalities alone
+# Currently only localhost user network can only access the game peer but planning to replace the network information properly once a proper server is launched
+
+# This coding is inspired by YouTuber "Barry's Dev Hell"
+# Link 1: "https://www.youtube.com/watch?v=RQTY1KMCf1E&list=PLNWIwxsLZ-LMYzxHlVb7v5Xo5KaUV7Tq1&index=13&pp=iAQB"
+# Link 2: "https://www.youtube.com/watch?v=nxBmspJ35ZY&list=PLNWIwxsLZ-LMYzxHlVb7v5Xo5KaUV7Tq1&index=14&pp=iAQB"
+
 extends Node2D
 
 # This holds the port info to be tested
@@ -49,7 +57,6 @@ func _on_join_button_pressed() -> void:
 	player_scene.client_set_up()
 
 func _on_peer_connected(peer_id):
-	print("Player Joined")
 	# This is to instantiate the opponent scene
 	var opponent_scene = opponent_field_scene.instantiate()
 	add_child(opponent_scene)
@@ -67,21 +74,20 @@ func disable_buttons():
 func host_game():
 	peer.create_server(PORT)
 	multiplayer.multiplayer_peer = peer
-	print("Server Started...")
-	# Change scene to the actual Game Field or Waiting Room
-	#get_tree().change_scene_to_file("res://Client/Scenes/GameField.tscn")
+	# This is the planned field to the user multiplayer, currently under development
+	# get_tree().change_scene_to_file("res://Client/Scenes/GameField.tscn")
 	
 func join_game(address):
 	peer.create_client(address, PORT)
 	multiplayer.multiplayer_peer = peer
-	print("Connecting to Host...")
-	#get_tree().change_scene_to_file("res://Client/Scenes/GameField.tscn")
+	# This is the planned field to the user multiplayer, currently under development
+	# get_tree().change_scene_to_file("res://Client/Scenes/GameField.tscn")
 
 @rpc("authority", "call_local", "reliable")
 func start_game_rpc():
+	# This is the planned field to the user multiplayer, currently under development
+	# get_tree().change_scene_to_file("res://Client/Scenes/GameField.tscn")
 	print("RPC Received: Starting Game...")
-	# Replace with your actual game scene path
-	#get_tree().change_scene_to_file("res://Client/Scenes/MainGameField.tscn")
 
 func start_game_for_all():
 	if multiplayer.is_server():

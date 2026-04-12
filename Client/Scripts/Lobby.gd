@@ -1,3 +1,11 @@
+# This is the Lobby script
+# The lobby is the first stage where users are accessing the game with
+# The lobby holds what rooms are active, which are open and how many users are allowed to join in
+# Additionally, users can create rooms in the lobby menu
+# The create room modal carries all of the options needed to the room lobby 
+
+# Reference is included in the AuthManager.gd script since that is the main code is located
+
 extends Control
 
 @onready var rooms_container = $VBoxContainer/ScrollContainer/RoomContainer

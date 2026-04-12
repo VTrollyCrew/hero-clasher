@@ -1,3 +1,10 @@
+# This is the players' hand
+# This holds the cards of the players' hand and their animation. Only the player can view what the hand cards are and interact with them
+# This script is attached to the PlayerHand node2D located in the PlayerField.tscn scene
+
+# This coding is inspired by YouTuber "Barry's Dev Hell"
+# Link: "https://www.youtube.com/watch?v=lATAS8YpzFE&list=PLNWIwxsLZ-LMYzxHlVb7v5Xo5KaUV7Tq1&index=4&pp=iAQB"
+
 extends Node2D 
 
 # const HAND_COUNT = 10 

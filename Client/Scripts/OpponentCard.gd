@@ -1,3 +1,7 @@
+# This is the opponent cand data script
+# This holds data of the opponents cards which were instantiated in the game
+# This is attached to the OpponentCard.tscn scene
+
 extends Node2D
 
 # For card position handling

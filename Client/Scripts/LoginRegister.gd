@@ -1,4 +1,11 @@
-# LoginScene.gd
+# This is the Log in and Register client side script
+# This script collects the login and registration data from the scene and pass it down to the AuthManager.gd in the server side to handle the data
+# This is attached to the LogInRegister.tscn scene
+
+# Codebase is referencing on multiple sources
+# Source 1: https://docs.godotengine.org (For scene GUI container, scene tree management, button management, etc). This is the official documentation
+# Source 2: Deepseek AI (For reference code)
+
 extends Control
 
 @onready var email_input = $NinePatchRect/VBoxContainer/UsernameLineEdit
@@ -19,18 +26,17 @@ func _on_register_button_pressed():
 		AuthManager.show_message("Registration Error", password_issue)
 		return
 	
+	# 3. Check valid values are entered to email or password
 	if email.is_empty() or password.length() < 8:
-		print("Please enter a valid email and a password (min 8 chars).")
+		AuthManager.show_message("Registration Error", "Please enter a valid email and a password (min 8 chars).")
 		return
 		
 	AuthManager.register_user(email, password)
 
 
 func _on_log_in_button_pressed() -> void:
-	print("--- Button Pressed! ---") # <--- ADD THIS
 	var email = email_input.text
 	var password = password_input.text
-	print("Attempting to login with: ", email) # <--- ADD THIS
 	
 	if email.is_empty() or password.is_empty():
 		AuthManager.show_message("Login Error", "Please fill in all fields.")

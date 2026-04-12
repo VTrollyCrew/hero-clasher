@@ -1,3 +1,9 @@
+# This is the player deck logic of the game
+# This manages the players' deck and their actions 
+
+# This coding is inspired by YouTuber "Barry's Dev Hell"
+# Link: "https://www.youtube.com/watch?v=riafP7MtvmQ"
+
 extends Node2D
 
 # This is the card scene path

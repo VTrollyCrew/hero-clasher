@@ -1,3 +1,11 @@
+# This manages the input signals 
+# This layers the clicks, interaction layers and the collosion masks
+# The main objective is to send the necessary signals to the game where the game then triggers thge actions according to the signsls
+
+# This is a common code pattern
+# This coding idealogy is inspired by YouTuber "Barry's Dev Hell"
+# Link: "https://www.youtube.com/watch?v=2jMcuKdRh2w&list=PLNWIwxsLZ-LMYzxHlVb7v5Xo5KaUV7Tq1&index=1&t=3s&pp=iAQB"
+
 extends Node2D
 
 # For recording clicks

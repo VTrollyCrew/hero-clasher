@@ -1,3 +1,10 @@
+# This is the opponents' deck logic of the game
+# This manages the opponents' decks and their actions 
+# This script is attached to the OpponentDeck node2D located in the OpponentField.tscn scene
+
+# This coding is inspired by YouTuber "Barry's Dev Hell"
+# Link: "https://www.youtube.com/watch?v=riafP7MtvmQ"
+
 extends Node2D
 
 const CARD_SCENE_PATH = "res://Client/Scenes/OpponentCard.tscn"

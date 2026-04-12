@@ -1,3 +1,12 @@
+# This is the Main Menu script.
+# This hosts the main menu functionalities from client side such as the dynamix changes, triggers, and signal reading
+# This also outputs the logged in user, VTrolly connected users and the amount of currency exist per user
+# This script is attached to MainMenu.tscn scene
+
+# Codebase is referencing on multiple sources
+# Source 1: https://docs.godotengine.org (For scene GUI container, scene tree management, button management, etc). This is the official documentation
+# Source 2: Deepseek AI (For reference code)
+
 extends Control
 
 @onready var username_label = $UserStats/UsernameLabel
